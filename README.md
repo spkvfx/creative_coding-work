@@ -9,7 +9,7 @@ Along with my educational license with JetBrains I noticed that they also had an
 
 I also tried to install Eclipse, but I accidentally installed it to root, and once I got that resolved I installed the wrong version. So I'll be using this.
 
-I would be nice to use the same IDE for my senior project, my personal projects and this class, and I am sure I could do it all in PyCharm, but this works fine also.
+It would be nice to use the same IDE for my senior project, my personal projects and this class, and I am sure I could do it all in PyCharm, but this works fine also.
 
 I already had a github account, so I just added this repository.
 
