@@ -1,4 +1,3 @@
-# Shawn Kearney
+# creative_coding-work
 
-## Summary
-Template
+Homework for Week Three
