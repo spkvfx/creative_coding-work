@@ -1,6 +1,6 @@
-#Shawn Kearney
+# Shawn Kearney
 
-##Summary
+## Summary
 I started on this assignment a bit early in order to get ahead a bit. I have a lot of research on my senior project that is needed early on, so I wanted to have some time.
 
 I wanted to use an IDE which I was familiar with, and one that has git functionality built-in. I really like JetBrains PyCharm, so I tried using it's JS templates, but they were too specific to various environments (or I could not immediately figure it out)
@@ -15,6 +15,6 @@ I already had a github account, so I just added this repository.
 
 Aside from figuring out which editor to use, I think things went OK. I'm going to need to ask how to organize p5.js later on.
 
-##Screenshot
+## Screenshot
 
 ![Image of my Editor](img/screenshot.png)
