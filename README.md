@@ -1,3 +1,3 @@
 # creative_coding-work
 
-Homework for Week Three
+Homework Template
