@@ -1,3 +1,3 @@
-# Empty p5 sketch.
+Shawn Kearney
 
-Please replace contents of this file with appropriate readme information after finishing your p5 sketch.
+["Hello World" Sketch](https://spkvfx.github.io/creative_coding-work/120-work/hw-3/)
