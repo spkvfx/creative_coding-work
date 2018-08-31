@@ -9,8 +9,6 @@ function setup() {
     createCanvas(800, 800);
     myEye = new Eyeball(50,2,1.5);
 
-    myBody = new BodyScribble(0,300,150)
-
 }
 
 function draw() {
@@ -20,7 +18,7 @@ function draw() {
 
     noFill();
 
-    translate(50,50)
+    translate(50,50) ;
     myBody.display() ;
 
 
@@ -51,41 +49,5 @@ function Eyeball(d,dr,pr) {
 
         arc(x,y,w,h,PI,PI,CHORD) ;                  //lower socket
         pop() ;                                     //restore
-    }
-}
-
-function BodyScribble(i,bx,by) {
-
-    this.i  = i;
-    this.bx = bx;
-    this.by = by;
-
-    this.cx = bx/2;
-    this.cy = by/2;
-
-
-
-    this.display = function() {
-
-        i = 0;
-        rx1 = 0;
-        ry1 = 0;
-
-        while (i < 5) {
-
-            this.rx2 = i * 50;
-            this.ry2 = random(0, this.by);
-
-            line(rx1, ry1, this.rx2, this.ry2);
-            myEye.display(rx1, ry1);
-
-            rx1 = this.rx2;
-            ry1 = this.ry2;
-            i = i + 1;
-        }
-
-        myEye.display(rx1, ry1);
-
-
     }
 }
