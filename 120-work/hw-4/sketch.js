@@ -1,8 +1,6 @@
 let bg;
 let myEye;
-let myBody;
 
-let y = 0 ;
 
 function setup() {
     bg = color(210,210,215);
@@ -19,7 +17,7 @@ function draw() {
     noFill();
 
     translate(50,50) ;
-    myBody.display() ;
+    myEye.display() ;
 
 
 }
