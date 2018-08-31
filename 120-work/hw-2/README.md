@@ -24,6 +24,12 @@ I did not ask for, nor helped with other students' assignments.
     * Realized I did everything completely wrong
 * Rewrote this file
 
+## p5 TypeScript Definitions
+
+Here is a [script](https://github.com/p5-types/p5.ts) for generating a typescript definition for auto-completion and code suggestions. 
+
+I did not run the script; somewhere inside that repository is a pre-built one. I do not know if it is up to date or not.
+
 ## Screenshot
 
 ![Image of my Editor](img/screenshot.png)
