@@ -11,7 +11,12 @@ I also tried to install Eclipse, but I accidentally installed it to root, and on
 
 It would be nice to use the same IDE for my senior project, my personal projects and this class, and I am sure I could do it all in PyCharm, but this works fine also.
 
-I already had a github account, so I just added this repository.
+I already had a github account, so I just added this repository, but I was not totally familiar yet with how to use it. I've never needed to get into md, so this is pretty useful, and seems a lot more straightforward than HTML.
+
+1. Here is a list using md
+    * md stands for *markdown*
+2. It is very easy to make lists, and stuff
+3. There is really no need for this list, though
 
 Aside from figuring out which editor to use, I think things went OK. I'm going to need to ask how to organize p5.js later on.
 
