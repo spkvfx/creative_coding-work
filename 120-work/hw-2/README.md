@@ -1,24 +1,28 @@
 # Shawn Kearney
 
 ## Summary
-I started on this assignment a bit early in order to get ahead a bit. I have a lot of research on my senior project that is needed early on, so I wanted to have some time.
 
-I wanted to use an IDE which I was familiar with, and one that has git functionality built-in. I really like JetBrains PyCharm, so I tried using it's JS templates, but they were too specific to various environments (or I could not immediately figure it out)
+I wanted to use an IDE which I was familiar with, I really like JetBrains PyCharm, so I decided on WebStorm.
 
-Along with my educational license with JetBrains I noticed that they also had an IDE called "WebStorm" which is essentially exactly the same as PyCharm but intended specifically for Javascript.
-
-I also tried to install Eclipse, but I accidentally installed it to root, and once I got that resolved I installed the wrong version. So I'll be using this.
+I also tried to install Eclipse, but I accidentally installed it to root, and once I got that resolved I installed the wrong version.
 
 It would be nice to use the same IDE for my senior project, my personal projects and this class, and I am sure I could do it all in PyCharm, but this works fine also.
 
-I already had a github account, so I just added this repository, but I was not totally familiar yet with how to use it. I've never needed to get into md, so this is pretty useful, and seems a lot more straightforward than HTML.
-
-1. Here is a list using md
-    * md stands for *markdown*
-2. It is very easy to make lists, and stuff
-3. There is really no need for this list, though
+I already had a github account, so I just added this repository. I was not totally familiar yet with how to use it, so getting some practice will be helpful. Markdown seems a lot more straightforward than HTML.
 
 Aside from figuring out which editor to use, I think things went OK. I'm going to need to ask how to organize p5.js later on.
+
+I did not ask for, nor helped with other students' assignments.
+
+## Steps Taken
+* Downloaded the p5 library
+* Found and installed Webstorm
+    * Familiarized myself with how webstorm differs from PyCharm
+    * Ran a simple test
+* Write this file
+* Looked at other students's examples
+    * Realized I did everything completely wrong
+* Rewrote this file
 
 ## Screenshot
 
