@@ -23,6 +23,7 @@ I did not ask for, nor helped with other students' assignments.
 * Looked at other students's examples
     * Realized I did everything completely wrong
 * Rewrote this file
+* I hope I included everything I needed to.
 
 ## p5 TypeScript Definitions
 
