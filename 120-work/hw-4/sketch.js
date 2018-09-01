@@ -6,8 +6,12 @@ function setup() {
     bg = color(210, 210, 215);
     createCanvas(800, 800);
 
-    for (let i = 0; i < 100; i+=10) {
-            myEye[i] = new Eyeball(random(10,50),random(1,2),random(1,4),random(0,800),random(0,800));
+    for (let i = 0; i < 10; i++) {
+        x = i * 50;
+        for (let j = 0; j < 10; j++) {
+            y = j * 50;
+            myEye[i] = new Eyeball(random(10, 50), random(1, 2), random(1, 4), x, y);
+        }
     }
 }
 
