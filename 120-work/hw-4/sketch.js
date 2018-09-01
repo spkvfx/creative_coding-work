@@ -1,34 +1,107 @@
 let bg;
 let myEye = [];
 
+let myMouth ;
+
+let myBeard;
+
+let spacing;
+let h;
+let v;
+
 
 function setup() {
     bg = color(210, 210, 215);
     createCanvas(800, 800);
 
-    i = 0;
-    for (let x = 0; x < 10; x++) {
-        for (let y = 0; y < 10; y++) {
-            myEye[i] = new Eyeball(random(10, 50), random(1, 2), random(1, 4), x*50, y*50);
+
+    spacing = 100;
+
+    h = 300;
+    v = 300;
+
+    let i = 0;
+    for (let x = 0; x <= h/spacing; x++) {
+        for (let y = 0; y <= v/spacing; y++) {
+            myEye[i] = new Eyeball(random(35, spacing*0.90), random(1, 2), random(1, 4), x*spacing, y*spacing);
             i++;
         }
     }
+
+    myMouth = new Mouth(v,100)
+    myBeard = new Beard(v/2,50)
 }
+
+
 
 
 function draw() {
 
     background(bg);
 
+    //primary translate
+    push();
+    translate(width/2-h/2,height/2-v/2*1.75);
 
-    text(myEye.length, 400,400);
+    //face outline
+    push();
+    noFill();
+    rect(-50,-50,h+100,v+300);
+    fill(bg) ;
+
+    translate(h/4,v*1.75);
+    push();
+    myBeard.display() ;
+    pop();
+    pop();
+
 
     for (let i = int(0); i < myEye.length; i++) {
         myEye[i].display();
     }
 
+    //mouth
+    myMouth.display(0,v+50);
+    pop();
+
+    pop();
 
 
+
+
+
+}
+
+function Beard(w,h) {
+    this.w = w;
+    this.h = h;
+
+    this.display = function(tx=0,ty=0) {
+        pop();
+        fill(bg) ;
+        push()
+        rect(0,0,this.w,this.h) ;
+        for(let i = 0; i<this.w/5;i++){
+            line(i*5,0,i*5,50);
+        }
+
+    }
+}
+
+function Mouth(w,h) {
+
+    this.w = w;
+    this.h = h;
+
+    this.display = function(tx=0, ty=0) {
+        translate(tx,ty);
+
+        push();
+        strokeWeight(10);
+        rect(0,0,this.w,this.h,10) ;                    //outline
+        line(0,this.h/2,this.w,this.h/2);          //lips divider
+        pop()
+    }
 
 
 }
@@ -52,8 +125,8 @@ function Eyeball(d,dr,pr,x=0,y=0) {
 
         let p = this.d / (this.dr * this.pr);       //pupil size
 
-        let pos_x = this.x + this.tx ;              //composite position x
-        let pos_y = this.y + this.ty ;              //composite position y
+        let pos_x = this.x + tx ;              //composite position x
+        let pos_y = this.y + ty ;              //composite position y
 
         push() ;                                    //main eye style
         fill(bg) ;                                  //eyelid color
