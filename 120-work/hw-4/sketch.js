@@ -28,8 +28,8 @@ function setup() {
         }
     }
 
-    myMouth = new Mouth(v,100)
-    myBeard = new Beard(v/2,50)
+    myMouth = new Mouth(v,100);
+    myBeard = new Beard(v/2,50);
 }
 
 
@@ -79,7 +79,7 @@ function Beard(w,h) {
     this.display = function(tx=0,ty=0) {
         pop();
         fill(bg) ;
-        push()
+        push();
         rect(0,0,this.w,this.h) ;
         for(let i = 0; i<this.w/5;i++){
             line(i*5,0,i*5,50);
@@ -125,10 +125,12 @@ function Eyeball(d,dr,pr,x=0,y=0) {
 
         let p = this.d / (this.dr * this.pr);       //pupil size
 
-        let pos_x = this.x + tx ;              //composite position x
-        let pos_y = this.y + ty ;              //composite position y
+        let pos_x = this.x;                         //composite position x
+        let pos_y = this.y;                         //composite position y
+
 
         push() ;                                    //main eye style
+        translate(tx,ty);
         fill(bg) ;                                  //eyelid color
         arc(pos_x,pos_y,w,h,0,PI) ;                       //eyelid (scaled)
 
@@ -137,7 +139,7 @@ function Eyeball(d,dr,pr,x=0,y=0) {
         ellipse(pos_x,pos_y,p,p);                         //pupil
         pop();                                      //push back to main style
 
-        arc(pos_x,pos_y,w,h,PI,PI,CHORD) ;          //lower socket
+        arc(this.x,this.y,w,h,PI,PI,CHORD) ;        //lower socket
         pop() ;                                     //restore style
     }
 }
