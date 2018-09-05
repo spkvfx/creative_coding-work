@@ -2,7 +2,7 @@ Shawn Kearney
 
 ["Hello World" Sketch](https://spkvfx.github.io/creative_coding-work/120-work/hw-3/)
 
----
+***
 
 Within Webstorm I copied the empty example and renamed it HW-3. I then proceeded to edit the sketch.js file.
 
