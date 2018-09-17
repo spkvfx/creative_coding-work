@@ -2,7 +2,7 @@
 
 ## Summary
 
-Meet Prof. Manyeyes McMouthy, Esq!
+Meet Prof. Manyeyes McMouthy, Esq!! His eyes change on reload!
 
 Making him was a lot of fun, but took a bit more time than I had anticipated. I had a lot of remembering how Processing works, and I made an effort to use (and perhaps over use) Push() and Pop().
 
