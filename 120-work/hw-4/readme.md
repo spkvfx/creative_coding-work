@@ -26,8 +26,7 @@ The monocles were an afterthought, because I thought it'd be hillarious to have 
 
 I considered using an applyMatrix() or negative scale() to mirror the right-side monocles, but I couldn't find a good place for it. Instead I've set this up explicitally. I'd prefer to just say where I want the cord, and then it automatically figured out where the mirror-compliment would be.
 
-I initially had a lot of problems with t
-he for() loop, since it's been a while since I've used one with an iterator like this. I was able to figure it out.
+I initially had a lot of problems with the for() loop, since it's been a while since I've used one with an iterator like this. I was able to figure it out.
 
 I'm also noticing that my IDE wants me to use "let" rather than "var" and in general these variable scope declariation are odd to me. I'm starting to appreciate where to use "const", and experimented with it as well.
 
