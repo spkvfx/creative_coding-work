@@ -1,6 +1,5 @@
-# Shawn Kearney
 
-## Summary
+
 
 I wanted to use an IDE which I was familiar with, I really like JetBrains PyCharm, so I decided on WebStorm.
 
