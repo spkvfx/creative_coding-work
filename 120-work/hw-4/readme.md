@@ -22,7 +22,7 @@ The monocles were an afterthought, because I thought it'd be hillarious to have 
 
 5. The monocles were an afterthought. I started with a circle and then solved the for a point on the circle's parimeter where the monocle's cord would attach
 
-##Issues
+## Issues
 
 I considered using an applyMatrix() or negative scale() to mirror the right-side monocles, but I couldn't find a good place for it. Instead I've set this up explicitally. I'd prefer to just say where I want the cord, and then it automatically figured out where the mirror-compliment would be.
 
