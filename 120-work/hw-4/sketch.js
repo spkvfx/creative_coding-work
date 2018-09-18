@@ -101,16 +101,14 @@ function draw() {
 }
 
 function Beard(w,h) {
-    this.w = w;                                                 //width
-    this.h = h;                                                 //height
 
     this.display = function(tx=0,ty=0) {
         push() ;
             translate(tx,ty) ;                                  //local translate
             push() ;
                 fill(bg) ;
-                rect(0,0,this.w,this.h) ;                       //beard shape
-                for(let i = 0; i<this.w/5;i++) {
+                rect(0,0,w,h) ;                       //beard shape
+                for(let i = 0; i<w/5;i++) {
                     line(i * 5, 0, i * 5, 50);                  //lines
                 }
             pop();
@@ -121,17 +119,14 @@ function Beard(w,h) {
 
 function Mouth(w,h) {
 
-    this.w = w;
-    this.h = h;
-
     this.display = function(tx=0, ty=0) {
         push();
             translate(tx,ty);
             push();
                 strokeWeight(10);                                  //lips stroke
                 fill('red') ;                                      //lips color
-                rect(0,0,this.w,this.h,10) ;                       //outline
-                line(0,this.h/2,this.w,this.h/2);                  //lips divider
+                rect(0,0,w,h,10) ;                       //outline
+                line(0,h/2,w,h/2);                  //lips divider
             pop();
         pop();
     }
@@ -139,22 +134,13 @@ function Mouth(w,h) {
 
 function Eyeball(dia_EYE,ratio_EYE,ratio_PUPIL,pos) {
 
-    this.d = dia_EYE;                                               //eye diameter
-    this.dr = ratio_EYE;                                            //aspect ratio
-    this.pr = max(1,ratio_PUPIL);                                   //pupil ratio (inverse)
-
-    this.x = pos.x;                                                 //init x pos
-    this.y = pos.y;                                                 //init y pos
+    ratio_PUPIL = max(1,ratio_PUPIL);                                //pupil ratio (inverse)
 
     this.display = function(tx=0, ty=0) {
 
-        let w = this.d;                                             //height
-        let h = this.d/this.dr;                                     //width
-
-        let p = this.d / (this.dr * this.pr);                       //pupil size
-
-        let pos_x = this.x;                                         //composite position x
-        let pos_y = this.y;                                         //composite position y
+        let w = dia_EYE;                                             //height
+        let h = dia_EYE / ratio_EYE ;                                //width
+        let size_PUPIL = dia_EYE / (ratio_EYE * ratio_PUPIL) ;       //pupil size
 
 
         push() ;                                                    //main eye style
@@ -162,14 +148,14 @@ function Eyeball(dia_EYE,ratio_EYE,ratio_PUPIL,pos) {
 
             push() ;
                 fill(bg) ;                                          //eyelid color
-                arc(pos_x,pos_y,w,h,0,PI) ;                         //eyelid (scaled)
+                arc(pos.x,pos.y,w,h,0,PI) ;                         //eyelid (scaled)
 
                 push();                                             //pupil sandbox
                     fill("black");                                  //pupil color
-                    ellipse(pos_x,pos_y,p,p);                       //pupil
+                    ellipse(pos.x,pos.y,size_PUPIL,size_PUPIL);                       //pupil
                 pop();                                              //push back to main style
 
-                arc(this.x,this.y,w,h,PI,PI,CHORD) ;                //lower socket
+                arc(pos.x,pos.y,w,h,PI,PI,CHORD) ;                //lower socket
             pop() ;                                                 //restore style
 
         pop() ;
@@ -177,10 +163,6 @@ function Eyeball(dia_EYE,ratio_EYE,ratio_PUPIL,pos) {
 }
 
 function Mono(dia_LENS=1,dia_RING=0.1,theta=1.25,pos) {
-    this.dia_LENS     = dia_LENS ;                                   //lens diameter
-    this.dia_RING     = dia_RING ;                                   //ring diameter
-    this.theta  =   theta ;                                          //position along lens (as decimal of pi)
-    this.pos      = pos ;                                            //position of the monocle
 
     this.display = function(tx=0, ty=0) {
         push() ;
@@ -188,10 +170,10 @@ function Mono(dia_LENS=1,dia_RING=0.1,theta=1.25,pos) {
 
             //ring and cord
             push() ;
-                let px = this.dia_LENS/2*cos(2*PI*this.theta)+this.pos.x ;    //calculate x position along the lens
-                let py = this.dia_LENS/2*sin(2*PI*this.theta)+this.pos.y ;    //calculate y position along the lens
+                let px = dia_LENS/2*cos(2*PI*theta)+pos.x ;    //calculate x position along the lens
+                let py = dia_LENS/2*sin(2*PI*theta)+pos.y ;    //calculate y position along the lens
                 fill('black') ;                                      //ring fill
-                ellipse(px,py,this.dia_RING,this.dia_RING) ;         //ring shape
+                ellipse(px,py,dia_RING,dia_RING) ;         //ring shape
                 line(px,py,px,height);                               //line
             pop() ;
 
@@ -200,7 +182,7 @@ function Mono(dia_LENS=1,dia_RING=0.1,theta=1.25,pos) {
                 push() ;
                     noFill() ;                                                           //make see-through
                     strokeWeight(2.5);                                                   //lens stroke
-                    ellipse(this.pos.x,this.pos.y,this.dia_LENS,this.dia_LENS) ;         //lens shape
+                    ellipse(pos.x,pos.y,dia_LENS,dia_LENS) ;         //lens shape
                 pop() ;
             pop() ;
         pop() ;
