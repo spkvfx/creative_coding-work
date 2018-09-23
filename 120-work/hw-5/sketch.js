@@ -13,8 +13,8 @@ function draw() {
     background('white') ;
 
     //where the spiral should start and end on the grid
-    const start = (mouseX/width) * (2 * PI) ;
-    const end = (mouseY/height) * (2 * PI) ;
+    const start = (mouseX/width) * (TWO_PI) ;
+    const end = (mouseY/height) * (TWO_PI) ;
 
     //a grid of points to draw shapes onto
     myGrid = new Grid(start, end) ;
@@ -31,7 +31,7 @@ function draw() {
             }
         pop() ;
 
-        //check if last segment, if not draw lines
+        //check if last segment, if not draw lines that connect points to form the spiral
         if (i < myGrid.pointCount - 1) {
             //draw a line between the current point and the next point
             line(myGrid.points[i].x, myGrid.points[i].y, myGrid.points[i + 1].x, myGrid.points[i + 1].y) ;
@@ -54,8 +54,8 @@ function Grid(start = 0, end = 2*PI, min_RADIUS = 300, max_RADIUS = 500, pos = c
         //interpolate the point's position along the radial axis
         const theta = lerp(start, end, i/max_RADIUS) ;
         //find the cartesian coordinate for the point
-        const px = d / 2 * cos(2 * PI * theta) + pos.x ;
-        const py = d / 2 * sin(2 * PI * theta) + pos.y ;
+        const px = d / 2 * cos(TWO_PI * theta) + pos.x ;
+        const py = d / 2 * sin(TWO_PI * theta) + pos.y ;
 
         //write the point into a vector and store the result in the array
         points[i] = createVector(px,py);
