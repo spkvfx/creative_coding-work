@@ -107,7 +107,7 @@ function Beard(w,h) {
             translate(tx,ty) ;                                  //local translate
             push() ;
                 fill(bg) ;
-                rect(0,0,w,h) ;                       //beard shape
+                rect(0,0,w,h) ;                                 //beard shape
                 for(let i = 0; i<w/5;i++) {
                     line(i * 5, 0, i * 5, 50);                  //lines
                 }
@@ -125,8 +125,8 @@ function Mouth(w,h) {
             push();
                 strokeWeight(10);                                  //lips stroke
                 fill('red') ;                                      //lips color
-                rect(0,0,w,h,10) ;                       //outline
-                line(0,h/2,w,h/2);                  //lips divider
+                rect(0,0,w,h,10) ;                                 //outline
+                line(0,h/2,w,h/2);                                 //lips divider
             pop();
         pop();
     }
@@ -152,10 +152,10 @@ function Eyeball(dia_EYE,ratio_EYE,ratio_PUPIL,pos) {
 
                 push();                                             //pupil sandbox
                     fill("black");                                  //pupil color
-                    ellipse(pos.x,pos.y,size_PUPIL,size_PUPIL);                       //pupil
+                    ellipse(pos.x,pos.y,size_PUPIL,size_PUPIL);     //pupil
                 pop();                                              //push back to main style
 
-                arc(pos.x,pos.y,w,h,PI,PI,CHORD) ;                //lower socket
+                arc(pos.x,pos.y,w,h,PI,PI,CHORD) ;                  //lower socket
             pop() ;                                                 //restore style
 
         pop() ;
@@ -172,17 +172,17 @@ function Mono(dia_LENS=1,dia_RING=0.1,theta=1.25,pos) {
             push() ;
                 let px = dia_LENS/2*cos(2*PI*theta)+pos.x ;    //calculate x position along the lens
                 let py = dia_LENS/2*sin(2*PI*theta)+pos.y ;    //calculate y position along the lens
-                fill('black') ;                                      //ring fill
-                ellipse(px,py,dia_RING,dia_RING) ;         //ring shape
-                line(px,py,px,height);                               //line
+                fill('black') ;                                //ring fill
+                ellipse(px,py,dia_RING,dia_RING) ;             //ring shape
+                line(px,py,px,height);                         //line
             pop() ;
 
             //lens
             push() ;
                 push() ;
-                    noFill() ;                                                           //make see-through
-                    strokeWeight(2.5);                                                   //lens stroke
-                    ellipse(pos.x,pos.y,dia_LENS,dia_LENS) ;         //lens shape
+                    noFill() ;                                 //make see-through
+                    strokeWeight(2.5);                         //lens stroke
+                    ellipse(pos.x,pos.y,dia_LENS,dia_LENS) ;   //lens shape
                 pop() ;
             pop() ;
         pop() ;
