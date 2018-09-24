@@ -2,7 +2,7 @@
 
 ## Assignment 5 Summary
 
-I started off making something else, and just as I was giving up and heading off to bed I imagined making a spiral by connecting equally spaced radians along nested circles. Obviously, this would result in a spiral. I then imagined what would happen if you changed different properties, like changing where the spiral started and ended on the innermost and outtermost ring. I thought of a few other manipulations, but here I've correlated the mouse position to positions on the inner and outer rings to make this little toy that I call **Polar Playground!**
+I started off making something else, and just as I was giving up and heading off to bed I imagined making a spiral by connecting equally spaced radians along nested circles. Obviously, this would result in a spiral. I then imagined what would happen if you changed different properties, like changing where the spiral started and ended on the innermost and outtermost ring. I thought of a few other manipulations, but here I've correlated the mouse position to positions on the inner and outer rings to make this little toy that I call **[Polar Playground!](https://spkvfx.github.io/creative_coding-work/120-work/hw-5/)**
 
 
 I was able to offer some feedback to ["looking for ideas on where to start.."](https://github.com/Montana-Media-Arts/120_CreativeCoding/issues/145) asked by HagenNathaniel on the issues board. I am not 100% sure if I got the math correct, I hope I was able to help. I also offered some advice on the process I use when addressing programming problems, by analyzing what are the "knowns and known-unknowns" relating to the problem.
