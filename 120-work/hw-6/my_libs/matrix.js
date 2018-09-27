@@ -7,7 +7,12 @@ class Matrix {
         return this;
     }
 
+
+    //stolen from:
+    //https://stackoverflow.com/questions/27205018/multiply-2-matrices-in-javascript
+
     add(addend) {
+        let sum = [] ;
         if (this.matrix.length !== addend.matrix.length) {
             throw err.mismatch()
         } else {
@@ -48,6 +53,7 @@ class Matrix {
     }
 
     convert() {
+        //TODO: return an array of vectors when possible; maybe truncate and warn rather than throw hard error?
         if (this.matrix.length === 0 || this.matrix.length > 1 || this.matrix[0].length < 2 || this.matrix[0].length > 3) {
             throw err.notVector() ;
         } else {
@@ -56,12 +62,66 @@ class Matrix {
     }
 }
 
+class TransformMatrix {
+
+    constructor() {
+        return this;
+    }
+
+    ident() {
+
+        const matrix = [
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1]
+        ];
+        return createMatrix(matrix);
+    }
+    ;
+
+    rotX(theta) {
+
+        const matrix = [
+            [1, 0, 0],
+            [0, cos(theta), -sin(theta)],
+            [0, sin(theta), cos(theta)]
+        ];
+        return createMatrix(matrix);
+    };
+
+    rotY(theta) {
+
+        const matrix = [
+            [cos(theta), 0, sin(theta)],
+            [0, 1, 0],
+            [-sin(theta), 0, cos(theta)]
+        ];
+        return createMatrix(matrix);
+    };
+
+    rotZ(theta) {
+
+        const matrix = [
+            [cos(theta), -sin(theta), 0],
+            [sin(theta), cos(theta), 0],
+            [0, 0, 1]
+        ];
+        return createMatrix(matrix);
+    };
+}
+
+
+
 function createMatrix(matrix_) {
-    return new Matrix(matrix_)
+    return new Matrix(matrix_) ;
 }
 
 function convertVector(vector_) {
     return new Matrix([[vector_.x,vector_.y,vector_.z]]) ;
+}
+
+function createTransform() {
+    return new TransformMatrix() ;
 }
 
 function Errors() {

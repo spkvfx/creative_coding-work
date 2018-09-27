@@ -1,43 +1,65 @@
 let a ;
 let b ;
 
-let ab ;
+let a_rot ;
+let b_rot ;
 
-let pos ;
+let pos_a ;
+let pos_b ;
 
 let theta ;
+
+let m = createTransform() ;
+
+let red ;
+let green ;
+let blue ;
 
 function setup() {
 
     createCanvas(800, 800);
     frameRate(24) ;
+
 }
 
 function draw() {
-
+    background('white')
 
     a = convertVector(
-
             createVector(100,100,0)
+    ) ;
 
+    b = convertVector(
+        createVector(-100,100,0)
     ) ;
 
     theta = PI*frameCount/100;
 
-    const rot_z = createMatrix(
-        [
-            [cos(theta),-sin(theta),0],
-            [sin(theta),cos(theta),0],
-            [0,0,1],
-        ]
-    ) ;
+    a_rot = a.mult(m.rotZ(theta)) ;
+    b_rot = b.mult(m.rotY(theta)) ;
 
-    ab = a.mult(rot_z) ;
+    pos_a = a_rot.convert() ;
+    pos_b = b_rot.convert() ;
 
-    pos = ab.convert() ;
-
+    noFill()
     translate(400,400) ;
-    ellipse(pos.x,pos.y,15,15) ;
+    line(pos_a.x,pos_a.y,pos_b.x,pos_b.y) ;
+    console.log(pos_a.z) ;
 
+    push() ;
+        red = (map(pos_a.z,-100,100,0,256)) ;
+        blue = (map(-pos_a.z,-100,100,0,256)) ;
+
+        stroke(red,0,blue) ;
+        ellipse(pos_a.x,pos_a.y,10,10) ;
+    pop() ;
+
+    push() ;
+        red = (map(pos_b.z,-100,100,0,256)) ;
+        blue = (map(-pos_b.z,-100,100,0,256)) ;
+
+        stroke(red,0,blue) ;
+        ellipse(pos_b.x,pos_b.y,10,10) ;
+    pop() ;
 
 }
