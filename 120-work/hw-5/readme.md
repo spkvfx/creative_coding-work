@@ -11,7 +11,7 @@ I was able to offer some feedback to ["looking for ideas on where to start.."](h
 1. I visualized the problem and tried to work out a solution in my head
 2. Wrote the core "Grid" function with theta = 0
 3. Reviewed the result using circles and verified that it produced a straight line
-4. Wrote the theta function to vary the position and verified the results
+4. Wrote the theta expression to vary the position and verified the results
 5. Connected the points with lines
 6. Correlated `mouseX` with the inside position and `mouseY` with the outside position
 7. Deleted the circles
