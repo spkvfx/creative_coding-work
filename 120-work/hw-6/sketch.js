@@ -67,10 +67,6 @@ function Cube(r) {
         for (let i = 0; i < vertex.length; i++) {
             for (let j = 0; j < vertex[i].length; j++) {
                 if (j > 0) {
-                    console.log("...") ;
-                    console.log(i);
-                    console.log("---");
-                    console.log(j);
                     edge.push([createVector(vertex[i][0].x, vertex[i][0].y, vertex[i][0].z), createVector(vertex[i][j].x, vertex[i][j].y, vertex[i][j].z)]);
                 }
             }
