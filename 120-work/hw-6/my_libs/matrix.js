@@ -3,87 +3,81 @@ let err = new Errors() ;
 class Matrix {
 
     constructor(matrix_) {
-        //TODO: maybe add a vector property here rather than convert()
         this.matrix = matrix_;
         return this;
     }
 
-    //matrix addition
+    //matrix addition (mostly for testing)
     add(addend) {
-        //verify that the matrix is valid
+        //init the sum array
+        let sum = [] ;
         if (this.matrix.length !== addend.matrix.length) {
             throw err.mismatch()
         } else {
-            //init the sum array
             let sum = [];
-            //iterate over rows
             for (let row = 0; row <= this.matrix.length - 1; row++) {
-                //init the rows array
                 sum[row] = [];
-                //iterate over columns
                 for (let column = 0; column <= this.matrix[row].length - 1; column++) {
-                    //add components
                     sum[row][column] = this.matrix[row][column] + addend.matrix[row][column];
                 }
             }
         }
-        //create and return the new matrix
         return createMatrix(sum);
     }
 
     //this was frikkin hard! It was eventually just stolen from:
     //https://stackoverflow.com/questions/27205018/multiply-2-matrices-in-javascript
     mult(factor) {
-        //init the product
         let product = [];
 
-        //check that the matrix is valid
-        const cols = this.matrix[0].length ;
-        const rows = factor.matrix.length ;
+        //confirm parity
+        const cols = this.matrix[0].length;
+        const rows = factor.matrix.length;
         if (cols !== rows) {
             throw err.composite()
         } else {
-            //initialize the rows
-            for (let i = 0; i < rows; i++) {
+            //multiply the matrix
+            //iterate over rows
+            for (let i = 0; i < this.matrix.length; i++) {
+                //init rows array
                 product[i] = [];
-                //get columns
-                for (let j = 0; j < cols; j++) {
+                //iterate over cols
+                for (let j = 0; j < factor.matrix[0].length; j++) {
+                    //multiply rows and cols sum the cols
                     let sum = 0;
                     for (let k = 0; k < this.matrix[0].length; k++) {
-                        //multiple the rows to the colunmn and sum the column
                         sum += this.matrix[i][k] * factor.matrix[k][j];
                     }
-                    //temp store the result
+                    //place in a temporary array
                     product[i][j] = sum;
                 }
             }
         }
-        //create and return the new matrix
+        //create the matrix and return
         return createMatrix(product);
-
     }
 
-    //convert a 1x3 matrix into a p5 vector
+    //convert a 1x3 array into a vector
+    //Should be a property like TheMatrix.matrix?
     convert() {
-        //make the the matrix is the right type
         //TODO: return an array of vectors when possible; maybe truncate and warn rather than throw hard error?
         if (this.matrix.length === 0 || this.matrix.length > 1 || this.matrix[0].length < 2 || this.matrix[0].length > 3) {
             throw err.notVector() ;
         } else {
-            //return the vector
             return createVector(this.matrix[0][0], this.matrix[0][1], this.matrix[0][2]) ;
         }
     }
 }
 
+//common transform matrices from wikipedia
 class TransformMatrix {
 
-    //I don't totally understand this...
+    //I don't totally understand this yet
     constructor() {
         return this;
     }
 
-    //identity matrix, just for testing
+    //identity matrix (does nothing)
     ident() {
 
         const matrix = [
@@ -93,9 +87,9 @@ class TransformMatrix {
         ];
         return createMatrix(matrix);
     }
+    ;
 
-    //rotation matrices from wikipedia
-    //rotation along x
+    //rotate along X
     rotX(theta) {
 
         const matrix = [
@@ -106,7 +100,7 @@ class TransformMatrix {
         return createMatrix(matrix);
     };
 
-    //rotation along y
+    //rotate along Y
     rotY(theta) {
 
         const matrix = [
@@ -117,7 +111,7 @@ class TransformMatrix {
         return createMatrix(matrix);
     };
 
-    //rotation along z
+    //rotate along Z
     rotZ(theta) {
 
         const matrix = [
@@ -130,20 +124,25 @@ class TransformMatrix {
 }
 
 
-//callable functions to create classes. not sure if this is remotely the right way to do this, but it works.
+//callable fuctions to access classes
+//not sure if this is thr right way.
+
+//create a matrix
 function createMatrix(matrix_) {
     return new Matrix(matrix_) ;
 }
 
+//convert a p5 vector to a 1x3 matrix
 function convertVector(vector_) {
     return new Matrix([[vector_.x,vector_.y,vector_.z]]) ;
 }
 
+//create transform matrices
 function createTransform() {
     return new TransformMatrix() ;
 }
 
-//errors for easy access
+//easy access to errors
 function Errors() {
     this.mismatch = function() {
         return Error('invalid matrix: must be same order') ;

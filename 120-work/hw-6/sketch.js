@@ -33,7 +33,7 @@ function draw() {
     background(abs(r-200),abs(g-200),abs(b-200)) ;
 
     //angle of rotation in degrees
-    //unnecessary map function. sin(f)*360 would have been fine, but assignment.
+    //unnecessarily map theta from -180 to +360
     const theta = map(sin(frameCount*(PI/200)),-1,1,-180,360) ;
 
     push() ;
@@ -81,7 +81,7 @@ function Cube(r) {
 
         //translate the point cloud
         let trans = [];
-        for (i = 0; i < point.length; i++) {
+        for (let i = 0; i < point.length; i++) {
             //rotate along the Y axis
             trans[i] = matrix[i].mult(m.rotY(radians(theta)));
             //rotate 45 degrees along the X axis
