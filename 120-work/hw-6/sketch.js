@@ -51,7 +51,6 @@ function draw() {
         g = random(0,255) ;
         b = random(0,255) ;
     }
-
 }
 
 //this is a mess
