@@ -34,7 +34,15 @@ function draw() {
 
     //angle of rotation in degrees
     //unnecessarily map theta from -180 to +360
-    const theta = map(sin(frameCount*(PI/200)),-1,1,-180,360) ;
+    const exp = sin(frameCount*(PI/300)) ;
+    //change color in phase
+    if (exp % 1 === 0) {
+        r = random(0,255) ;
+        g = random(0,255) ;
+        b = random(0,255) ;
+
+    }
+    const theta = map(exp,-1,1,-405,765) ;
 
     push() ;
         //translate the cube
@@ -45,12 +53,6 @@ function draw() {
         myCube.display(theta) ;
     pop() ;
 
-    //change color in phase
-    if (theta % 180 === 0) {
-        r = random(0,255) ;
-        g = random(0,255) ;
-        b = random(0,255) ;
-    }
 }
 
 //this is a mess
