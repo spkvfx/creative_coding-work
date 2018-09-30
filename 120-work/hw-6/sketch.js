@@ -12,6 +12,8 @@ let green;
 const frame_rate = 500 ;
 const period = 4 ;
 
+const speed = 3.;
+
 let myColor ;
 
 
@@ -108,6 +110,6 @@ function draw() {
     }
 
     //update position
-    P = P.add(v);
+    P = P.add(v.mult(speed));
 
 }
