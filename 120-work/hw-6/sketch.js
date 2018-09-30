@@ -12,7 +12,9 @@ let green;
 const frame_rate = 500 ;
 const period = 4 ;
 
-const speed = 3.;
+//this doesn't work as anticipated
+//I could not fine a way to connect the previous frame
+const factor = 1.0;
 
 let myColor ;
 
@@ -110,6 +112,6 @@ function draw() {
     }
 
     //update position
-    P = P.add(v.mult(speed));
+    P = P.add(v.mult(factor));
 
 }
