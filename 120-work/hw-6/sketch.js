@@ -110,6 +110,4 @@ function draw() {
     //update position
     P = P.add(v);
 
-
-
 }

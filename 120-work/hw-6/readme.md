@@ -11,8 +11,8 @@ I then projected the x-y, z-y and z-x planes onto the canvas and arranged them i
 ## Steps Taken
 1. I created a position vector and used it's x/y position as the position of an `ellipse`.
 2. Created a velocity vector and updated the position with `vector.add()` and confirmed the results
-3. Applied the cross product between the current position and an up axis vector to the velocity vector and confirmed the resulting spiral shape.
-4. Played around with the velocity expression and added the flip-flopping direct.
+3. Applied the cross product between the current position and an up axis vector to the velocity vector and confirmed the resulting shape.
+4. Played around with the velocity expression and added the flip-flopping direction.
 5. I added some animation in the z-axis and applied color to circle
 6. Derived the projections and found an interesting way to compose them.
 
