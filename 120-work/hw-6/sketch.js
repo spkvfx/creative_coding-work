@@ -103,10 +103,11 @@ function draw() {
     pop();
 
     //reset the position when the y or z position reaches a given value
+    const thresh_rand = random(-height/10,height/10) ;
     //randomize to the reset threshold value
-    const k = random(-height/10,height/10) ;
+    const thresh = {pos : height/4 + thresh_rand, neg : -height/4 + thresh_rand};
 
-    if ((P.y >= height/4 + k || P.x >= height/4 + k) || (P.y <= -height/4 + k || P.x <= -height/4 + 5)) {
+    if ((P.y >= thresh.pos || P.x >= thresh.pos) || (P.y <= thresh.neg || P.x <= thresh.neg)) {
         //reset the position to 0, keep the velocity and up direction
         P = createVector(0,0,0) ;
     }
