@@ -12,6 +12,8 @@ let green;
 const frame_rate = 500 ;
 const period = 4 ;
 
+let myColor ;
+
 
 function setup() {
     //p5 stuff
@@ -53,9 +55,14 @@ function draw() {
     //draw the x-y plane
     push() ;
         //map the color to the position
-        red =     map(P.y % width, -width, width, 0,   255) ;
-        blue =    map(P.z % width, -width, width, 255, 0) ;
-        fill(red,0, blue) ;
+        //always had trouble with color() so a good place to use an object!
+        myColor = {
+            r : map(P.y % width, -width, width, 0,   255),
+            g : 0,
+            b : map(P.z % width, -width, width, 255, 0)
+        } ;
+
+        fill(myColor.r,myColor.g, myColor.b) ;
 
         //position drawing
         translate(width/2,height/4) ;
@@ -66,20 +73,27 @@ function draw() {
 
     //draw the z-y plane
     push();
-        blue =     map(P.x % width, -width, width, 0,   255) ;
-        green =    map(P.z % width, -width, width, 255, 0) ;
+        myColor = {
+            r : 0,
+            g : map(P.z % width, -width, width, 255, 0) ,
+            b : map(P.x % width, -width, width, 0,   255)
+        } ;
 
-        fill(0,green,blue) ;
+
+        fill(myColor.r,myColor.g, myColor.b) ;
         translate(width,height/2) ;
         ellipse(P.z % width,P.y,1,1) ;
     pop();
 
     //draw the z-x plane
     push();
-        blue =     map(P.y % width, -width, width, 0,   255) ;
-        green =    map(P.x % width, -width, width, 255, 0) ;
+        myColor = {
+            r : 0,
+            g : map(P.y % width, -width, width, 0,   255) ,
+            b : map(P.x % width, -width, width, 255, 0)
+        } ;
 
-        fill(0,blue,green) ;
+        fill(myColor.r,myColor.g, myColor.b) ;
         translate(0,height/2) ;
         ellipse(-P.z % width,-P.x,1,1) ;
     pop();
