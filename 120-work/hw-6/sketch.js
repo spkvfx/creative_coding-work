@@ -41,7 +41,8 @@ function draw() {
     }
 
     //I hope that this satisfies the math functions requirements.
-    //velocity = NORMALIZE(up+(velocity+(up X position)))
+    //I've used cross and normalize in place of the scalar functions that were listed.
+    //velocity = NORMALIZE(up+(velocity+(up X position)))   (i think)
     v = up.add(v.add(up.cross(P)).normalize());
 
     //get rid of the stroke
