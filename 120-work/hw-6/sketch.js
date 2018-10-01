@@ -1,22 +1,23 @@
-let y = 0;
+
+// position
 let P;
+//velocity
 let v;
+//up axis
 let up ;
-
+//up axis variant
 let z ;
-
-let red;
-let blue;
-let green;
-
-const frame_rate = 500 ;
-const period = 4 ;
-
-//this doesn't work as anticipated
-//I could not fine a way to connect the previous frame
-const factor = 1.0;
-
+//line colour
 let myColor ;
+
+//constants
+
+//frame rate
+const frame_rate = 500 ;
+//randomization period
+const period = 4 ;
+//Velocity Scale; does not work as intended. Keep at 1.
+const rate = 1 ;
 
 
 function setup() {
@@ -115,6 +116,6 @@ function draw() {
     }
 
     //update position
-    P = P.add(v.mult(factor));
+    P = P.add(v.mult(rate));
 
 }
