@@ -3,7 +3,7 @@ let P;
 let v;
 let up ;
 
-let k = 1 ;
+let z ;
 
 let red;
 let blue;
@@ -41,10 +41,12 @@ function draw() {
     //flipflop the up vector based on period
     //tried setting up.z while initing up to {0,0,0}, but it didn't work. Not sure why...
     if (frameCount % frame_rate < random(frame_rate/period,frame_rate)) {
-        up = createVector(0,0,-1) ;
+        z = -1 ;
     } else {
-        up = createVector(0,0,1) ;
+        z = 1 ;
     }
+
+    up = createVector(0,0,z) ;
 
     //I hope that this satisfies the math functions requirements.
     //I've used cross and normalize in place of the scalar functions that were listed.
