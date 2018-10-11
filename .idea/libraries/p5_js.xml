@@ -1,10 +1,5 @@
 <component name="libraryTable">
   <library name="p5.js" type="javaScript">
-    <properties>
-      <sourceFilesUrls>
-        <item url="file://$USER_HOME$/Documents/FALL 2018/Creative Coding/lib/p5" />
-      </sourceFilesUrls>
-    </properties>
     <CLASSES>
       <root url="file://$USER_HOME$/Documents/FALL 2018/Creative Coding/lib/p5" />
     </CLASSES>
