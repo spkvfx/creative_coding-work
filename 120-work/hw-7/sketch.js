@@ -13,6 +13,7 @@ function setup() {
     createCanvas(800, 800);
 
     //make a new instance of the Phxyz class
+    //see my_libs/Phxyz.js
     myPhysics = new Phxyz() ;
     //make an initial force
     myPhysics.F = new createVector(speed,0) ;
