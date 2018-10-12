@@ -1,65 +1,106 @@
 
-
+let m = createTransform() ;
 let myPhysics ;
+let myPaddle ;
+
 const drag = 0 ;
 
-let F;
+let bounds ;
+
+let mouse1 = 0 ;
+let mouse2 = 0;
 
 function setup() {
-    createCanvas(windowWidth, 400);
-    background(255);
+    createCanvas(400, 400);
+    //background(255);
 
     myPhysics = new Phxyz() ;
 
-    F = createVector(1,0) ;
+    myPhysics.F = new createVector(1,0) ;
 
     myPhysics.mass = 1.0 ;
-    myPhysics.drag = 0.01 ;
+    myPhysics.drag = 0 ;
+
+    myPaddle = new Paddle() ;
 
 }
 
 function draw() {
     background('white') ;
+    mouse1 = mouseX ;
 
-    if (frameCount % 120 === 60) {
-        myPhysics.F = createVector(1,random()) ;
-    }   else {
-        myPhysics.F.mult(0) ;
-    }
-
-
+    translate(width/2,height/2) ;
+    myPaddle.display(mouse1-mouse2) ;
     push() ;
-        myPhysics.xy(0,height/2) ;
+        myPhysics.xy(0,0) ;
         ellipse(0,0,10,10) ;
     pop() ;
+    noFill() ;
+    ellipse(0,0,200,200) ;
 
     myPhysics.update() ;
+    myPhysics.F.mult(0) ;
 
-    console.log(myPhysics.F) ;
-}
 
-class Phxyz {
-    constructor() {
-        this.v = createVector(0,0) ; //velocity vector
-        this.P = createVector(0,0) ; //position vector
-        this.F = createVector(0,0) ; //force vector
+    const pos = createVector(myPhysics.P.x,myPhysics.P.y) ;
 
-        this.mass = 1 ; //mass
-        this.drag = 0 ;
+    const look = vect_sub(pos,myPaddle.c).normalize() ;
 
-        return this ;
+    if (look.dot(myPaddle.N) <= 0 ) {
+        myPhysics.collision(myPaddle.N) ;
+    } else if (createVector(0,0,0).dist(myPhysics.P) >= 100) {
+        myPhysics.P.mult(0) ;
+        myPhysics.v.mult(0) ;
+        myPhysics.F = createVector(random(),random()).normalize() ;
     }
 
-    update() {
-        this.v = this.v.add(this.F.div(this.mass)).mult(1-this.drag) ;
-        this.P.add(this.v) ;
-    }
+    mouse2 = mouseX ;
 
-    xy(tx_ = 0, ty_ = 0) {
-        return translate(this.P.x+tx_,this.P.y+ty_) ;
-    }
+
 }
 
 function mouseClicked() {
-    myPhysics.v.mult(-1) ;
+    myPhysics.collision(createVector(1,0)) ;
+}
+
+class Paddle {
+    constructor() {
+        this.a = createVector(100*cos(radians(-25)),100*sin(radians(25))) ;
+        this.b = createVector(100*cos(radians(-25)),100*sin(radians(-25))) ;
+        this.N = createVector(-1,0) ;
+        this.c = vect_add(this.a,this.b).mult(0.5) ;
+    }
+
+
+    display(theta = 0) {
+
+        let a_matrix = convertVector(this.a) ;
+        let b_matrix = convertVector(this.b) ;
+
+        let N_matrix = convertVector(this.N) ;
+
+        let c_matrix = convertVector(this.c) ;
+
+        a_matrix = a_matrix.mult(m.rotZ(radians(theta))) ;
+        b_matrix = b_matrix.mult(m.rotZ(radians(theta))) ;
+
+        N_matrix = N_matrix.mult(m.rotZ(radians(theta))) ;
+
+        c_matrix = c_matrix.mult(m.rotZ(radians(theta))) ;
+
+        this.a = a_matrix.convert() ;
+        this.b = b_matrix.convert() ;
+
+        this.c = c_matrix.convert() ;
+
+        this.N = N_matrix.convert() ;
+
+        //console.log(a) ;
+
+        push() ;
+            strokeWeight(3) ;
+            line(this.a.x, this.a.y, this.b.x, this.b.y) ;
+        pop() ;
+
+    }
 }
