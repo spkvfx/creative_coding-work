@@ -1,99 +1,115 @@
 
-let m = createTransform() ;
 let myPhysics ;
 let myPaddle ;
 
-const drag = 0 ;
-
-let bounds ;
-
-let mouse1 = 0 ;
-let mouse2 = 0;
+//radius of the game area
+const r = 400 ;
+//speed of the ball
+const speed = 2 ;
+//rate of increasing speed
+const difficulty = 0.1 ;
 
 function setup() {
-    createCanvas(400, 400);
-    //background(255);
+    createCanvas(800, 800);
 
+    //make a new instance of the Phxyz class
     myPhysics = new Phxyz() ;
-    myPhysics.F = new createVector(1,0) ;
+    //make an initial force
+    myPhysics.F = new createVector(speed,0) ;
 
-    myPaddle = new Paddle() ;
+    //make a new instance of the paddle object
+    myPaddle = new Paddle(2.5) ;
 
 }
 
 function draw() {
+    //clear background
     background('white') ;
-    mouse1 = mouseX ;
 
-    translate(width/2,height/2) ;
-    myPaddle.display(mouse1-mouse2) ;
-    push() ;
-        myPhysics.xy(0,0) ;
-        ellipse(0,0,10,10) ;
-    pop() ;
-    noFill() ;
-    ellipse(0,0,200,200) ;
+    //get the mouse position and write to a vector (is there a built-in variable?)
+    let mousey = createVector(mouseX-width/2, mouseY-height/2) ;
 
+    //get the heading of the mouse vector
+    const theta = degrees(mousey.heading());
+
+    //update physics
     myPhysics.update() ;
+
+    //draw figures
+    push()
+        //main transform
+        translate(width/2,height/2) ;
+        //game court
+        ellipse(0,0,r,r) ;
+        //the ball
+        push() ;
+            //2D transform the ball along the xy projection
+            myPhysics.xy(0,0) ;
+            //the ball figure
+            ellipse(0,0,10,10) ;
+        pop() ;
+        //display the paddle in position
+        myPaddle.display(theta,myPhysics.P) ;
+    pop() ;
+
+    //remove forces to prevent accumulation
     myPhysics.F.mult(0) ;
 
+    //-----------collisions----------------//
 
+    //copy the position into a new vector
+    //I had trouble with vector copy()
     const pos = createVector(myPhysics.P.x,myPhysics.P.y) ;
+
+    //create a vector between the ball's current position and the center of the paddle
     const look = vect_sub(pos,myPaddle.c).normalize() ;
 
+    //this is here to help visualize vectors.
+    //line(pos.x,pos.y,myPaddle.c.x,myPaddle.c.y) ;
+
+    //get the dot product between the look vector and the paddle's normal vector.
+    //if less than or equal to zero, assume collision
     if (look.dot(myPaddle.N) <= 0 ) {
+        //change the ball's direction using the paddle's normal as the mirror axis
         myPhysics.collision(myPaddle.N) ;
-    } else if (createVector(0,0,0).dist(myPhysics.P) >= 100) {
+        myPhysics.v.mult(1 + difficulty) ;
+        //if not hit, check for boundary and reset game
+    } else if (createVector(0,0,0).dist(myPhysics.P) >= r/2) {
+        //zero the position
         myPhysics.P.mult(0) ;
+        //zero the velocity
         myPhysics.v.mult(0) ;
-        myPhysics.F = createVector(random(),random()).normalize() ;
+        //add a random force
+        myPhysics.F = createVector(random(-1,1),random(-1,1)).normalize().mult(speed) ;
     }
-
-    mouse2 = mouseX ;
-
-
 }
 
-function mouseClicked() {
-    myPhysics.collision(createVector(1,0)) ;
-}
+//the paddle function
+function Paddle(w_ = 15) {
+    //width of the paddle in arc degrees
+    this.w = w_*2;
 
-class Paddle {
-    constructor() {
-        this.a = createVector(100*cos(radians(-25)),100*sin(radians(25))) ;
-        this.b = createVector(100*cos(radians(-25)),100*sin(radians(-25))) ;
-        this.N = createVector(-1,0) ;
-    }
+    //display the paddle in place
+    this.display = function(theta = 0, pos) {
 
+        //calculate the points
+        this.a = createVector(r/2*cos(radians(this.w+theta)),r/2*sin(radians(this.w+theta))) ;
+        this.b = createVector(r/2*cos(radians(-this.w+theta)),r/2*sin(radians(-this.w+theta))) ;
 
-    display(theta = 0) {
-
-        let a_matrix = convertVector(this.a) ;
-        let b_matrix = convertVector(this.b) ;
-
-        let N_matrix = convertVector(this.N) ;
-
-        //let c_matrix = convertVector(this.c) ;
-
-        a_matrix = a_matrix.mult(m.rotZ(radians(theta))) ;
-        b_matrix = b_matrix.mult(m.rotZ(radians(theta))) ;
-        N_matrix = N_matrix.mult(m.rotZ(radians(theta))) ;
-
-        //c_matrix = c_matrix.mult(m.rotZ(radians(theta))) ;
-
-        this.a = a_matrix.convert() ;
-        this.b = b_matrix.convert() ;
-
-        //this.c = c_matrix.convert() ;
-
-        this.N = N_matrix.convert() ;
-
-        //console.log(a) ;
-
+        //calculate the center position
         this.c = vect_add(this.a,this.b).mult(0.5) ;
 
+        //calculate the normal vector
+        this.N = createVector(-this.c.x,-this.c.y).normalize() ;
+
+        //distance from center (currently not used)
+        this.from = (this.c.dist(pos)) ;
+
+        //draw the paddle
         push() ;
+            //stroke weight
             strokeWeight(3) ;
+            //the figure
             line(this.a.x, this.a.y, this.b.x, this.b.y) ;
         pop() ;
 
