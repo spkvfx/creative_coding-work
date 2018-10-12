@@ -1,3 +1,5 @@
+//This is a *very incomplete* physics framework I am working on.
+
 class Phxyz {
     constructor() {
         this.v = createVector() ; //velocity vector
@@ -16,13 +18,13 @@ class Phxyz {
     }
 
     collision(normal) {
-
-        const n = normal.copy() ;  // unit vector
-        const d = this.v ;              // vector
+        const n = normal.copy() ;      // unit vector
+        const d = this.v ;             // vector
         const dot = d.dot(n) * 2;      // scalar
 
-        const n2 = n.mult(dot) ;        // vector
-        this.v = vect_sub(d,n2) ;     // vector
+        const n2 = n.mult(dot) ;       // vector
+
+        this.v = vect_sub(d,n2) ;      // vector
     }
 
     xy(tx_ = 0, ty_ = 0) {
@@ -30,6 +32,7 @@ class Phxyz {
     }
 }
 
+//additional vector operations
 function vect_mult(a,b) {
     return createVector(a.x * b.x, a.y * b.y, a.z * b.z)
 }
@@ -37,7 +40,6 @@ function vect_mult(a,b) {
 function vect_sub(a, b) {
     return createVector(a.x - b.x, a.y - b.y, a.z - b.z)
 }
-
 
 function vect_add(a, b) {
     return createVector(a.x + b.x, a.y + b.y, a.z + b.z)
