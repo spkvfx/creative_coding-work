@@ -88,7 +88,7 @@ function Cube(bounds) {
             trans[i] = matrix[i].mult(m.rotY(radians(theta)));
             //rotate 45 degrees along the X axis
             trans[i] = trans[i].mult(m.rotX(radians(45)));
-            //convert the points to vectors (
+            //convert the matrices back to vectors
             point[i] = trans[i].convert();
         }
 
