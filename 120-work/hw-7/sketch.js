@@ -94,8 +94,8 @@ function Paddle(w_ = 15) {
     this.display = function(theta = 0, pos) {
 
         //calculate the points
-        let a = createVector(r/2*cos(radians(this.w+theta)),r/2*sin(radians(this.w+theta))) ;
-        let b = createVector(r/2*cos(radians(-this.w+theta)),r/2*sin(radians(-this.w+theta))) ;
+        this.a = createVector(r/2*cos(radians(this.w+theta)),r/2*sin(radians(this.w+theta))) ;
+        this.b = createVector(r/2*cos(radians(-this.w+theta)),r/2*sin(radians(-this.w+theta))) ;
 
         //calculate the center position
         this.c = vect_add(this.a,this.b).mult(0.5) ;
@@ -111,7 +111,7 @@ function Paddle(w_ = 15) {
             //stroke weight
             strokeWeight(3) ;
             //the figure
-            line(a.x, a.y, b.x, b.y) ;
+            line(this.a.x, this.a.y, this.b.x, this.b.y) ;
         pop() ;
 
     }
