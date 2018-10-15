@@ -1,6 +1,6 @@
 # Shawn Kearney
 
-## Assignment 6 Summary
+## Assignment 8 Summary
 
 For this assignment I had a few goals beyond the requirements. It was originally written for HW6, but I could not really figure out an easy way to get it to be generative and evolving.
 
@@ -14,7 +14,7 @@ This is a totally ridiculous, ineffecient and overly complicated way to draw a c
 3. Tested what would happen if I fed it a parity mismatch
 4. Worked out a way to detect and throw errors
 5. Worked on matrix multiplication
-6 Kept working on matrix multiplication
+6. Kept working on matrix multiplication
 7. Went to sleep
 8. Kept working on matrix multiplication
 9. Stole matrix multiplication from another source
