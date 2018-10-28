@@ -12,8 +12,8 @@ After letting it run for a long while (after it looks like it's settled), these 
 
 ## Steps Taken
 1. Looked up how to do diffusion-reaction in photoshop and researched the image kernels required
-2. Worked out how best to organize things. I settled on making each pixel a "reactor element" and processed them individually
-3. Got really frikkin confused over a misplaced backet
+2. Worked out how best to organize things. I settled on making each pixel a "reactor element" object and processed them individually
+3. Got really confused over a misplaced backet
 4. Adjusted the kernels for aesthetic improvement
 5. Ran through a number of trials
 
