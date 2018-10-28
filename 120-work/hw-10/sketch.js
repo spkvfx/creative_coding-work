@@ -100,9 +100,12 @@ class DiffusionReaction {
         //initialize the kernel
         this.kernel = [] ;
         //initialize the kernel operators
+        //https://en.wikipedia.org/wiki/Kernel_(image_processing)
         this.op =
             {
+                //modified gaussian blur kernel operation
                 diffusion : [[1/32, 1/32*2, 1/32], [1/32*2, 1/32*4, 1/32*2], [1/32, 1/32*2, 1/32]],
+                //modified edge detection kernel operation
                 reaction : [[0, -2, 0], [-2, 8, -2], [0, -2, 0]]
             }
     }
