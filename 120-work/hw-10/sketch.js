@@ -111,12 +111,12 @@ class DiffusionReaction {
             }
     }
 
-    //call the diffusion evaluation
+    //call the diffusion evaluator
     diffusion() {
         this.element = eval(this.kernel,this.op.diffusion) ;
     }
 
-    //call the diffusion reaction
+    //call the reaction evaluator
     reaction() {
         this.element = eval(this.kernel,this.op.reaction) ;
     }
