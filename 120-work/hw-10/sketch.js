@@ -10,6 +10,7 @@ function setup() {
     //keep the canvas size relatively small since this sketch is SLOW
     //must be square (not sure why)
     createCanvas(500,500) ;
+    background("black") ;
 
     //populate the empty array with pixels of random values
     for(let i = 0; i < width; i++) {
@@ -44,7 +45,7 @@ function draw() {
     }
 }
 
-//finds nearby neighbors and writes their value to the reactor.kernel array
+//finds nearby neighbors and writes their value to the rea ctor.kernel array
 //not dynamic: only works with a 3x3 matrix
 function UpdateKernel(image) {
     //get rows
