@@ -4,9 +4,9 @@
 
 This week I lacked a lot of inspiration and I just wasn't sure what I wanted to do. I imagined up something that I will probably modify this for next week that served as inspiration for this week's assignment.
 
-Here I created two classes, one a pointcloud and another for individual points. The points have method for finding the nearest point to itself.
+Here I created two objects, one a pointcloud and another for individual points. The points have method for finding the nearest point to itself.
 
-The pointcloud has three functions, one to clear all points (unused) and another for adding points and removing the most recently added point.
+The pointcloud has three methods, one to clear all points (unused) and another for adding points and a third for removing the most recently added point.
 
 I've set this up to visualize the nearest neighbors with circles and lines, with the circle's radius defined by the distance between the point and it's neighbor
 
