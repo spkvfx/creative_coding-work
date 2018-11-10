@@ -11,11 +11,11 @@ function setup() {
     createCanvas(800, 800);
 
     //pointcloud instance
-    myPointcloud = new Pointcloud();
+    myPointcloud = new xPointcloud();
 
     //insert three points to start
     for(let i = 0; i<3; i++){
-        myPointcloud.append(new Point(id,random(0, width), random(0, height)));
+        myPointcloud.append(new xPoint(id,random(0, width), random(0, height)));
         id++ ;
     }
 }
@@ -51,7 +51,7 @@ function draw() {
     //cycle between adding and removing points
     if(frameCount % cycle < cycle/2) {
         //add a new point
-        myPointcloud.append(new Point(id, random(0, width), random(0, height)));
+        myPointcloud.append(new xPoint(id, random(0, width), random(0, height)));
         //increment the point id
         id++ ;
     } else {
@@ -64,7 +64,7 @@ function draw() {
 }
 
 //point class
-class Point {
+class xPoint {
     //constructor with attributes ptnum(parameter), x position(parameter), y position(parameter) and neighbor (another point object)
     constructor(ptnum,x,y) {
         this.ptnum = ptnum ;            //point number
@@ -102,15 +102,15 @@ class Point {
 }
 
 //pointcloud class
-class Pointcloud {
+class xPointcloud {
     //construct an empty array
     constructor() {
         this.points = [] ;      //array of points
     }
 
     //add new point to the pointcloud array
-    append(obj) {
-        append(this.points,obj) ;
+    append(xPointObj) {
+        append(this.points,xPointObj) ;
     }
 
     //delete the last point
