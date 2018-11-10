@@ -63,6 +63,7 @@ function draw() {
 
 }
 
+
 //point class
 class xPoint {
     //constructor with attributes ptnum(parameter), x position(parameter), y position(parameter) and neighbor (another point object)
