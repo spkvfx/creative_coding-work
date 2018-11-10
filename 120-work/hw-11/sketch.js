@@ -78,11 +78,11 @@ class xPoint {
         //the best candidate
         let candidate = null ;
         //the target point
-        let target ;
+        //let target ;
         //iterate over the pointcloud
         for (let i = 0; i < pc.points.length; i++) {
             //set the target point to the current pointcloud point
-            target = pc.points[i] ;
+            const target = pc.points[i] ;
             //exclude self from evaluation
             if (target.ptnum !== this.ptnum) {
                 //measure distance between the target and self
