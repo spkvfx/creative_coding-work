@@ -77,8 +77,6 @@ class xPoint {
     getClosest(pc) {
         //the best candidate
         let candidate = null ;
-        //the target point
-        //let target ;
         //iterate over the pointcloud
         for (let i = 0; i < pc.points.length; i++) {
             //set the target point to the current pointcloud point
