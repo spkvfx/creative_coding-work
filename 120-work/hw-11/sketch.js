@@ -36,9 +36,9 @@ function draw() {
 
         //connect the points together with a line and draw a circle
         //get the point position
-        thisPoint = myPointcloud.points[i].P ;
+        const thisPoint = myPointcloud.points[i].P ;
         //get the point's neighbor position
-        thatPoint = myPointcloud.points[i].Neighbor.P ;
+        const thatPoint = myPointcloud.points[i].Neighbor.P ;
         //get the distance between the points
         const r = myPointcloud.points[i].Dist;
         //draw the line between the points
