@@ -1,67 +1,90 @@
+
 //Pointcloud to contain points
 let myPointcloud ;
 
 //Point Number ID
 let id = 0 ;
 
-const cycle = 2500 ;
+const seeds = 5 ;
+const iters = 12 ;
+const minDist = 5 ;
+
+const showSeeds = true ;
+const showLines = true ;
+const showNodes = true ;
+
+const scatterX = 1 ;
+const scatterY = 0.5 ;
 
 function setup() {
+
     createCanvas(800, 800);
+    frameRate(10) ;
+    background('black') ;
 
     //pointcloud instance
     myPointcloud = new xPointcloud();
 
     //insert three points to start
-    for(let i = 0; i<3; i++){
-        myPointcloud.append(new xPoint(id,random(0, width), random(0, height)));
-        id++ ;
+    for(let i = 0; i<seeds; i++){
+        const x = random((-scatterX * width/2) + width / 2, (scatterX * width/2) + width / 2) ;
+        const y = random((-scatterY * height/2) + height / 2, (scatterY * height/2) + height / 2) ;
+        myPointcloud.append(new xPoint(id,x, y));
+        id++;
+        if (showSeeds) {
+            stroke('red');
+            fill('red') ;
+            strokeWeight(0.5);
+            ellipse(x, y, 10, 10);
+        }
     }
 }
 
 function draw() {
 
     //clear the background
-    background('black') ;
+    //background('black');
     //draw with a white stroke and no fill
-    stroke('white') ;
-    noFill() ;
+    stroke('white');
+    noFill();
+    strokeWeight(0.5) ;
+
 
     //get the closest point and connect them
     //iterate over points in myPointcloud
+
+    //const r = myPointcloud.points[0].Dist ;
+
+
+    //myPointcloud.append(new xPoint(id, random(-r, r), random(-r, r)));
+    let newPoints = [] ;
     for (let i = 0; i < myPointcloud.points.length; i++) {
-        //establish the closest point to the current point
         myPointcloud.points[i].getClosest(myPointcloud) ;
-
-        //connect the points together with a line and draw a circle
-        //get the point position
         const thisPoint = myPointcloud.points[i].P ;
-        //get the point's neighbor position
         const thatPoint = myPointcloud.points[i].Neighbor.P ;
-        //get the distance between the points
         const r = myPointcloud.points[i].Dist;
-        //draw the line between the points
-        line(thisPoint.x,thisPoint.y,thatPoint.x,thatPoint.y) ;
-        //draw a circle at every point with a radius of the distance
-        ellipse(thisPoint.x,thisPoint.y,r,r) ;
+        if ((frameCount <= iters)) {
+            if (r > minDist) {
+                append(newPoints, new xPoint(id, random(-r + thisPoint.x, r + thisPoint.x), random(-r + thisPoint.y, r + thisPoint.y)));
+                id++;
+            }
+        } else {
+            myPointcloud.clear();
+            id=0 ;
+            //alert("Done Cooking");
+            noLoop() ;
+        }
+        //stroke(1/myPointcloud.points[i].dist) ;
+        if (showNodes) {
+            ellipse(thatPoint.x,thatPoint.y,r/2,r/2) ;
+        }
+        if (showLines) {
+            line(thisPoint.x, thisPoint.y, thatPoint.x, thatPoint.y);
+        }
     }
-
-
-    //cycle between adding and removing points
-    if(frameCount % cycle < cycle/2) {
-        //add a new point
-        myPointcloud.append(new xPoint(id, random(0, width), random(0, height)));
-        //increment the point id
-        id++ ;
-    } else {
-        //remove the last point
-        myPointcloud.delete() ;
-        //decrement the id
-        id-- ;
-    }
-
+    console.log(myPointcloud.points.length) ;
+    myPointcloud.points = concat(myPointcloud.points,newPoints) ;
 }
-
 
 //point class
 class xPoint {
