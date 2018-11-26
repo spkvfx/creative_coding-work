@@ -6,6 +6,6 @@ For the final I intend to write a generative script that follows the following r
 
 * Once a given velocity (v) magnitude reaches a specific threshold, each actor's velocity is inverted. This has the effect of the being repelled within a defined radius:<br><br><img src="https://latex.codecogs.com/gif.latex?|{\sqrt{v_x^2&plus;v_y^2}}|$\geq$threshold&space;:&space;v&space;=&space;-v" title="|{\sqrt{v_x^2+v_y^2}}|$\geq$threshold : v = -v" />
 
-* Additionally, an additional actor is created with an injected velocity (v) *perpendicular* to the corresponding actor's parent's velocity (v') :<br><br><img src="https://latex.codecogs.com/gif.latex?\left&space;\{&space;v_x,v_y&space;\right&space;\}&space;=&space;\left&space;\{&space;v'_y,-v'_x&space;\right&space;\}" title="\left \{ v_x,v_y \right \} = \left \{ v'_y,-v'_x \right \}" />
+* Additionally, a new actor is created with an injected velocity (v) *perpendicular* to the corresponding actor's parent's velocity (v') :<br><br><img src="https://latex.codecogs.com/gif.latex?\left&space;\{&space;v_x,v_y&space;\right&space;\}&space;=&space;\left&space;\{&space;v'_y,-v'_x&space;\right&space;\}" title="\left \{ v_x,v_y \right \} = \left \{ v'_y,-v'_x \right \}" />
 
 The goal is to have a network of points that attract, repel and change direction dependent on the system as a whole. It will be interesting to discover if the points will eventually settle in equilibrium, or if the system will remain chaotic, and if it is chaotic, how unpredictable will the system become.
