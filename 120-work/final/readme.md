@@ -10,6 +10,7 @@ For the final I intend to write a generative script that follows the following r
 
 * Furthermore, each actor gains mass over time and with each 'split' some of the parent's mass is transferred to the child. 
 * Upon reaching a minimum threshold, each actor dies and is removed from the network. Mass variation also impacts actor speed via drag, with more massive actors moving slower than lighter actors.
+* Time permitting, more massive actors may be more attractive, though I am not totally sure yet how to implement this - perhaps by simply multiplying a weight in the force averaging derived by mass?
 
 The goal is to have a network of points that attract, repel and change direction dependent on the system as a whole. It will be interesting to discover if the points will eventually settle in equilibrium, or if the system will remain chaotic, and if it is chaotic, how unpredictable will the system become.
 
