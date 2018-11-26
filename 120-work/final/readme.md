@@ -2,7 +2,7 @@
 
 For the final I intend to write a generative script that follows the following rules:
 
-* Each actor is attracted to one another at a rate of the mean reciprocal of the distances multiplied by the unit vector between corresponding points, such that close points are far more attractive than distant points: <br><br><img src="https://latex.codecogs.com/gif.latex?F&space;=&space;\frac{1}{n}&space;\sum&space;_{i=1}&space;^n&space;(\widehat{P1_i&space;-&space;P2_i})&space;\cdot&space;\frac{1}{d_i}" title="F = \frac{1}{n} \sum _{i=1} ^n (\widehat{P1_i - P2_i}) \cdot \frac{1}{d_i}" /><br>* a curve function of *F* may be required to normalize force to a manageable range.
+* Each actor is attracted to one another at a rate of the mean reciprocal of the distances (d) multiplied by the unit vector between corresponding points (P1, P2), such that close points are far more attractive than distant points: <br><br><img src="https://latex.codecogs.com/gif.latex?F&space;=&space;\frac{1}{n}&space;\sum&space;_{i=1}&space;^n&space;(\widehat{P1_i&space;-&space;P2_i})&space;\cdot&space;\frac{1}{d_i}" title="F = \frac{1}{n} \sum _{i=1} ^n (\widehat{P1_i - P2_i}) \cdot \frac{1}{d_i}" /><br>* a curve function of *F* may be required to normalize force to a manageable range.
 
 * Once a given velocity magnitude reaches a specific threshold, each actor's velocity is inverted. This has the effect of the being repelled within a defined radius:<br><br><img src="https://latex.codecogs.com/gif.latex?|{\sqrt{v_x^2&plus;v_y^2}}|$\geq$threshold&space;:&space;v&space;=&space;-v" title="|{\sqrt{v_x^2+v_y^2}}|$\geq$threshold : v = -v" />
 
