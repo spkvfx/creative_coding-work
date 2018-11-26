@@ -12,4 +12,4 @@ For the final I intend to write a generative script that follows the following r
 
 The goal is to have a network of points that attract, repel and change direction dependent on the system as a whole. It will be interesting to discover if the points will eventually settle in equilibrium, or if the system will remain chaotic, and if it is chaotic, how unpredictable will the system become.
 
-It will also be interesting to experiment with what initial states will produce a sustainable network and which states will be prone to decay and eventual extinction.
+It will also be interesting to experiment with which initial states will produce a sustainable network and which states will be prone to decay and eventual extinction.
