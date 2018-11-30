@@ -4,12 +4,19 @@ function id_gen(size = 4) {
 
 //point class
 class xPoint {
-    //constructor with attributes ptnum(parameter), x position(parameter), y position(parameter) and neighbor (another point object)
-    constructor(x,y) {
+    constructor(x = 0,y = 0, z = 0) {
+        //arbitrary id just because it might be useful
         this.id = id_gen();
+        //attribute object (allows for dynamic attribution at any point)
         this.attribute = {
-            P: createVector(x, y)
+            //position attribute (minimum requirement for creation)
+            P: createVector(x, y, z)
         }
+    }
+
+    //visualize the xy projection of the xpoint as a p5 point() object
+    display() {
+        point(this.attribute.P.x,this.attribute.P.y)
     }
 }
 
@@ -19,31 +26,43 @@ class xPointcloud {
     constructor() {
         this.id = id_gen();
         this.points = [];      //array of points
+        //attributes object
         this.attribute = {
+            //point count (minimum requirement with default of zero)
             ptcount : 0
         }
     }
 
-    //create a new xPoint object and append to the pointcloud
+    //create a new point and append to the pointcloud
     spawn(x = 0, y = 0, z = 0) {
-        const xp = new xPoint(x,y)
-        this.append(xp) ;
+        this.append(new xPoint(x,y,z)) ;
     }
 
-    //append an existing poing to the pointcloud
+    //append an existing point to the pointcloud
     append(xp) {
-        append(this.points, xp);
-        const ptcount = this.points.length;
-        xp.attribute['ptnum'] = ptcount - 1 ;
-        xp.attribute['pcid'] = this.id ;
+        //append the point to the pointcloud
+        append(this.points, xp) ;
+        //get the updated point count
+        const ptcount = this.points.length ;
+        //update the point count pointcloud attribute
         this.attribute.ptcount = ptcount ;
+
+        //note: the following point attributes prevent points from existing in more than one pointcloud
+        //add the pointcloud reference id attribute
+        if (typeof(xp.attribute.pcid) === "undefined") {
+            xp.attribute['pcid'] = this.id;
+            //add the corresponding point number attribute
+            xp.attribute['ptnum'] = ptcount - 1;
+        } else {
+            console.log('Point with '+xp.id+' appears to belong to pointcloud with id '+xp.attribute.pcid) ;
+            return ;
+        }
     }
 
     //delete the last point
     delete()
     {
         this.points.pop()
-
     }
 
     //clear all points
@@ -55,7 +74,7 @@ class xPointcloud {
     display()
     {
         for (let i = 0; i < this.attribute.ptcount; i++) {
-            point(this.points[i].attribute.P.x, this.points[i].attribute.P.y)
+            this.points[i].display() ;
         }
     }
 
@@ -63,7 +82,6 @@ class xPointcloud {
     nearest(xp) {
         //the best candidate
         let candidate = null ;
-        let target = null ;
         let neighbor = null ;
         //iterate over the pointcloud
         for (let i = 0; i < this.attribute.ptcount; i++) {

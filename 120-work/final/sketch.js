@@ -1,19 +1,35 @@
 let myPointcloud ;
 
+let thisPoint ;
+let nearPoint ;
+
 function setup() {
-    createCanvas(800,800)
+    createCanvas(800,800) ;
+    //new empty point cloud
     myPointcloud = new xPointcloud();
-    for(let i = 0; i<1000; i++){
+    //create a bunch of random points
+    const n = 1000 ;
+    for(let i = 0; i<n; i++){
         myPointcloud.spawn(random()*width,random()*height) ;
     }
 
-    console.log(myPointcloud.nearest(myPointcloud.points[500])) ;
+    thisPoint = myPointcloud.points[n*0.5] ;
+    nearPoint = myPointcloud.nearest(myPointcloud.points[n*0.5]) ;
 }
 
 function draw() {
     noFill() ;
     noLoop() ;
     myPointcloud.display() ;
-    ellipse(myPointcloud.points[500].attribute.P.x,myPointcloud.points[500].attribute.P.y,10,10) ;
-    ellipse(myPointcloud.nearest(myPointcloud.points[500]).attribute.P.x,myPointcloud.nearest(myPointcloud.points[500]).attribute.P.y,10,10) ;
+    push() ;
+        strokeWeight(0.75) ;
+        push() ;
+            stroke('red') ;
+            ellipse(thisPoint.attribute.P.x,thisPoint.attribute.P.y,10,10) ;
+        pop() ;
+        push() ;
+            stroke('blue') ;
+            ellipse(nearPoint.attribute.P.x,nearPoint.attribute.P.y,10,10) ;
+        pop() ;
+    pop() ;
 }
