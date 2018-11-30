@@ -1,25 +1,32 @@
-var circle;
 
+var song;
+var deltaX = 0;
+
+function preload() {
+    song = loadSound("Nuori prinssi 2.mp3");
+}
 function setup() {
-    createCanvas( 600, 600 );
-
-    circle = new Bubble();
+    createCanvas(windowWidth, 500);
+    song.play();
 }
 
 function draw() {
-    background('black');
-    circle.display();
-    circle.ascend();
-}
+    background('lightblue');
 
-function Bubble() {
-    this.x = random(width);   //bubble appears in new spot upon refresh
-    this.y = random(height);
+    translate(deltaX, 0);
+    deltaX++;
 
-    this.display = function(){
-        stroke('white');
-        strokeWeight(2);
-        fill('lightBlue');
-        ellipse(this.x, this.y, 40, 40);
+// cloud
+    noStroke();
+    fill( 255 );
+    ellipse(100,100,150,50);
+    ellipse(75,125,150,50);
+    ellipse(200,125,150,50);
+    ellipse(150,135,150,50);
+
+    if (deltaX + 85 > width){
+        deltaX = -145;
+
     }
+
 }
