@@ -8,9 +8,7 @@ class xPoint {
     constructor(x,y) {
         this.id = id_gen();
         this.attribute = {
-            P: createVector(x, y),
-            ptnum : null,
-            pcid : null
+            P: createVector(x, y)
         }
     }
 }
@@ -26,13 +24,18 @@ class xPointcloud {
         }
     }
 
+    //create a new xPoint object and append to the pointcloud
+    spawn(x = 0, y = 0, z = 0) {
+        const xp = new xPoint(x,y)
+        this.append(xp) ;
+    }
 
-    //add new point to the pointcloud array
-    spawn(x = 0, y = 0, xp = new xPoint(x,y)) {
+    //append an existing poing to the pointcloud
+    append(xp) {
         append(this.points, xp);
         const ptcount = this.points.length;
-        xp.attribute.ptnum = ptcount - 1 ;
-        xp.attribute.pcid = this.attribute.id ;
+        xp.attribute['ptnum'] = ptcount - 1 ;
+        xp.attribute['pcid'] = this.id ;
         this.attribute.ptcount = ptcount ;
     }
 
@@ -61,20 +64,22 @@ class xPointcloud {
         //the best candidate
         let candidate = null ;
         let target = null ;
+        let neighbor = null ;
         //iterate over the pointcloud
         for (let i = 0; i < this.attribute.ptcount; i++) {
             //set the target point to the current pointcloud point
-            target = this.points[i] ;
+            const target = this.points[i] ;
             //exclude self from evaluation
-            if (target.attribute.id !== xp.attribute.id) {
+            if (target !== xp) {
                 //measure distance between the target and self
                 const distance = xp.attribute.P.dist(target.attribute.P) ;
                 //if the distance from target and self is less than or is less than or equal to the
                 if (distance <= candidate || candidate == null) {
+                    neighbor = target ;
                     candidate = distance;
                 }
             }
         }
-        return target ;
+        return neighbor ;
     }
 }

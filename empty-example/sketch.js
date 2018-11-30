@@ -1,32 +1,49 @@
+let myPurpleSphere ;
+let myGreenSphere ;
 
-var song;
-var deltaX = 0;
-
-function preload() {
-    song = loadSound("Nuori prinssi 2.mp3");
-}
 function setup() {
-    createCanvas(windowWidth, 500);
-    song.play();
+    createCanvas(800, 800);
+    myPurpleSphere = new purpleSphere(100,100,100) ;
+    myGreenSphere = new greenSphere(50,50,100) ;
+
 }
 
 function draw() {
-    background('lightblue');
+    noLoop() ;
+    myPurpleSphere.display();
+    myGreenSphere.display();
+}
 
-    translate(deltaX, 0);
-    deltaX++;
-
-// cloud
-    noStroke();
-    fill( 255 );
-    ellipse(100,100,150,50);
-    ellipse(75,125,150,50);
-    ellipse(200,125,150,50);
-    ellipse(150,135,150,50);
-
-    if (deltaX + 85 > width){
-        deltaX = -145;
-
+class Sphere {
+    constructor(x,y,radius,color) {
+        this.x = x ;
+        this.y = y ;
+        this.radius = radius;
+        this.color = color ;
+        this.stroke = 2.0 ;
     }
 
+    display() {
+        push() ;
+            fill(this.color) ;
+            strokeWeight(this.stroke)
+            ellipse(this.x,this.y, this.radius,this.radius) ;
+        pop() ;
+    }
+
+}
+
+class purpleSphere extends Sphere {
+    constructor(x,y,size) {
+        const radius = size/2
+        super(x,y,radius,"purple") ;
+    }
+}
+
+class greenSphere extends Sphere {
+    constructor(x,y,size) {
+        const radius = (size/2) ;
+        super(x,y,radius,"green") ;
+        this.stroke = 1.0 ;
+    }
 }
