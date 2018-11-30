@@ -24,3 +24,5 @@ I will need to cleanup up some code in my custom libraries I've developed throug
 ### Work Plan
 
 I am dedicating approximately 14-20 hours to this project, six hours of which are to be spent on cleaning up existing code, six to eight hours on development and the remainder on visualization and experimenting with different parameters to find interesting results. If I have time, I'd like to also include some kind of user input. The algorithm is already planned, so it should be pretty straightforward to code.
+
+[Here is a link to my project's latest commit.](https://spkvfx.github.io/creative_coding-work/120-work/final/)
