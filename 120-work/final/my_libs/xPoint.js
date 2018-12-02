@@ -1,6 +1,3 @@
-function id_gen(size = 4) {
-    return crypto.getRandomValues(new Uint32Array(size)).join('-');
-}
 
 class xPointcloud {
     //construct an empty array
@@ -22,32 +19,46 @@ class xPointcloud {
     spawn(x = 0, y = 0, z = 0) {
         //create the new point
         const xp = new XPoint(x,y,z) ;
-        //append to this pointcloud
-        this.append(xp) ;
-        //return the created point object
-        return xp
+        //append to this pointcloud and return the created point object if appended
+        //NOTE: the point is created, but without anywhere to go it remains unstructured garbage
+        if(this.append(xp)){
+            return xp
+        //otherwise return null
+        } else {
+            return null
+        }
     }
 
     //append an existing point to the pointcloud
     append(xp) {
-        if (this.attribute.max > this.attribute.ptcount) {
+        //add points only if the point count is less than the maximum
+        if (this.attribute.max >= this.attribute.ptcount) {
             //append the point to the pointcloud
             append(this.points, xp);
-            append(xp.attribute.pcid,this.pcid) ;
+            //append the reference ID to the point's pointcloud id list.
+            append(xp.attribute.pcid,this.id) ;
             //update the point count pointcloud attribute
             this.attribute.ptcount = this.points.length;
-            //associate this pointcloud with the created point's pointcloud id attribute
+
+            //return true if the point as added
+            return true
+        } else {
+            //otherwise return false
+            return false
         }
     }
 
     //delete a given point by it's index
-    remove(index = 0)
+    remove(xp)
     {
+        const index = this.points.indexOf(xp) ;
         //get the target point
-        const xp = this.points[index] ;
+        const thisPoint = this.points[index] ;
+        //remove the point from th pointcloud
         this.points.splice(index,1) ;
-        xp.attribute.pcid.splice(this.pcid,1) ;
-        this.attribute.ptcount = this.points.length ;
+        //disassociate the point from th pointcloud
+        thisPoint.attribute.pcid.splice(thisPoint.attribute.pcid.indexOf(this.id),1) ;
+        this.attribute.ptcount --
     }
 
     //clear all points
@@ -95,36 +106,52 @@ class xPointcloud {
 
 //point class
 class XPoint {
-    constructor(x = 0,y = 0, z = 0) {
-        //arbitrary id just because it might be useful
-        this.id = id_gen() ;
-        //position attribute (minimum requirement for creation)
-        this.attribute = {} ;
-        this.behavior = {} ;
-        this.attribute['P'] = createVector(x, y, z) ;
-        this.attribute['pcid'] = [] ;
+    constructor(x = 0, y = 0, z = 0) {
+        //arbitrary reference id
+        this.id = id_gen();
+        //point attributes object
+        this.attribute = {};
+        //point behaviors object
+        this.behavior = {};
+
+        //point position attribute
+        this.attribute['P'] = createVector(x, y, z);
+        //list of pointclouds
+        //I had it set up to directly reference the corresponding Pointcloud object, but the infinite nesting freaked me out a little. Though it did seem to work ok.
+        this.attribute['pcid'] = [];
     }
 
     //visualize the xy projection of the xpoint as a p5 point() object
     display() {
-        point(this.attribute.P.x,this.attribute.P.y) ;
+        point(this.attribute.P.x, this.attribute.P.y);
     }
 
+    //display the point with a specified color and optional circle. implemented for testing purposes
     emphasis(color = 'red', circled = true) {
-        push();
-        stroke('black') ;
-        if(circled === false) {
-            stroke(color) ;
-        }
-        this.display() ;
-        pop() ;
-        if(circled === true) {
+        //if the particle is not circled, change it's color to the specified color
+        if (circled === false) {
             push();
-            noFill();
-            strokeWeight(0.5);
-            stroke(color);
-            ellipse(this.attribute.P.x, this.attribute.P.y, 10, 10);
+                //change the point color
+                stroke(color);
+                //display the point
+                this.display();
             pop();
+            //other, draw the circle around the point but leave the color
+        } else {
+            //display the point
+            this.display();
+
+            push();
+                //ensure that there is no fill
+                noFill();
+                //change th stroke weight
+                strokeWeight(0.5);
+                //set the circle's color to the specified color
+                stroke(color);
+                //draw the circle
+                ellipse(this.attribute.P.x, this.attribute.P.y, 10, 10);
+            pop();
+
         }
     }
 }

@@ -21,7 +21,6 @@ const influence = 1 ;
 //minimum radius to nearest neighbor to spawn (warning: no built-in maximum)
 const breed = 0.1;
 
-
 //particle mass
 const pmass = 100 ;
 const pmass_variance = 10 ;
@@ -40,19 +39,21 @@ function nursery(pos,force) {
         //create new points
         const newPoint = myPointcloud.spawn(pos.x, pos.y);
         //add attributes
-        newPoint.attribute['v'] = createVector(0,0,0) ;                                         //velocity
-        newPoint.attribute['F'] = createVector(force.x,force.y) ;                               //force
-        newPoint.attribute['mass'] = random(pmass,pmass*pmass_variance) ;                       //mass
-        newPoint.attribute['drag'] = pdrag  ;                                                   //drag (should be an external force, but thus far external forces do not exist)
-        newPoint.attribute['Cd'] = color(random(64,128),random(128,255),random(200,255)) ;      //Color
-        newPoint.attribute['avoid'] = random(bias,avoidance) ;                                  //avoidance probability
-        newPoint.attribute['attract'] = random(bias,attraction) ;                               //attraction probability
-        //add physics
-        newPoint.behavior['physics'] = new Phxyz(newPoint);
-        //flag physics behavior to "true"
-        newPoint.behavior.physics.active = true ;
-        //return the new xPoint object for easy access
-        return newPoint
+        if(newPoint != null) {
+            newPoint.attribute['v'] = createVector(0, 0, 0);                                         //velocity
+            newPoint.attribute['F'] = createVector(force.x, force.y);                               //force
+            newPoint.attribute['mass'] = random(pmass, pmass * pmass_variance);                       //mass
+            newPoint.attribute['drag'] = pdrag;                                                   //drag (should be an external force, but thus far external forces do not exist)
+            newPoint.attribute['Cd'] = color(random(64, 128), random(128, 255), random(200, 255));      //Color
+            newPoint.attribute['avoid'] = random(bias, avoidance);                                  //avoidance probability
+            newPoint.attribute['attract'] = random(bias, attraction);                               //attraction probability
+            //add physics
+            newPoint.behavior['physics'] = new Phxyz(newPoint);
+            //flag physics behavior to "true"
+            newPoint.behavior.physics.active = true;
+            //return the new xPoint object for easy access
+        }
+            return newPoint
     }
     //console.log(newPoint) ;
 }
@@ -69,8 +70,12 @@ function offspring(xp) {
     } ;
     //create child point
     const newPoint = nursery(pos, force) ;
+
     //set the child point's color
-    newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128)) ;
+    if(newPoint != null){
+        newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128)) ;
+    }
+
 
     return newPoint
 }
@@ -98,15 +103,14 @@ function setup() {
 }
 
 function draw() {
+    console.log(myPointcloud.attribute.ptcount)
+    //noLoop() ;
     //iterate over the point cloud
     for (i = 0; i < myPointcloud.attribute.ptcount; i++) {
-
         //get the current point
         const thisPoint = myPointcloud.points[i] ;
-
         //check for points with an active physics behavior
         if (thisPoint.behavior.physics.active === true) {
-
             //get the nearest point and the distance
             myPointcloud.nearest(thisPoint) ;
 
@@ -148,7 +152,10 @@ function draw() {
                 //change the color of the collided points
                 thisPoint.attribute.Cd = color(255,random(0,64),random(0,64)) ;
 
+                //offspring for the current point
                 offspring(thisPoint) ;
+                //offspring for the neighbor point
+                //this is necessary to emulate expectation since by the time the neighbor point is evaluated the ccorresponding point is already outside of the radius
                 offspring(thisPoint.attribute.neighbor) ;
 
             }
@@ -168,8 +175,8 @@ function draw() {
 
         //kill stuck and distant points
         } else if (thisPoint.behavior.physics.active === false || thisPoint.attribute.P.x < -width || thisPoint.attribute.P.y < -height || thisPoint.attribute.P.x > width*2 || thisPoint.attribute.P.y > height*2){
-            myPointcloud.remove(myPointcloud.points.indexOf(thisPoint)) ;
-            //console.log(thisPoint) ;
+            //remove the stuck point from the pointcloud
+            myPointcloud.remove(thisPoint) ;
         }
     }
 }
