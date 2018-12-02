@@ -21,6 +21,7 @@ const influence = 1 ;
 //minimum radius to nearest neighbor to spawn (warning: no built-in maximum)
 const breed = 0.1;
 
+
 //particle mass
 const pmass = 100 ;
 const pmass_variance = 10 ;
@@ -124,8 +125,8 @@ function draw() {
             //spawn a new particle within breed radius
             if(d < breed * 0.5) {
                 //collide the particles along the velocity axis
-                //this is mostly because it handles velocity and force automatically
-                thisPoint.behavior.physics.collision(thisPoint.attribute.v.normalize())
+                //uses Phxyz.collision() because it handles velocity and force automatically
+                thisPoint.behavior.physics.collision(thisPoint.attribute.v.normalize()) ;
                 //change the color of the collided points
                 thisPoint.attribute.Cd = color(255,random(0,64),random(0,64)) ;
 
@@ -137,8 +138,8 @@ function draw() {
                 } ;
                 //set to the initial force to the vector perpendicular to it's parent
                 const force = {
-                    x : thisPoint.attribute.v.y,
-                    y : thisPoint.attribute.v.x * -1
+                    x : thisPoint.attribute.F.y,
+                    y : thisPoint.attribute.F.x * -1
                 } ;
 
                 //create child point

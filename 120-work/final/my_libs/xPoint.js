@@ -4,12 +4,13 @@ function id_gen(size = 4) {
 
 class xPointcloud {
     //construct an empty array
-    constructor() {
+    constructor(m = 5000) {
         this.id = id_gen();
         this.points = [];      //array of points
         this.attribute = {
             //point count (minimum requirement with default of zero)
-            ptcount : 0
+            ptcount : 0,
+            max : m
         }
     }
 
@@ -22,14 +23,16 @@ class xPointcloud {
 
     //append an existing point to the pointcloud
     append(xp) {
-        //append the point to the pointcloud
-        append(this.points, xp) ;
-        //update the point count pointcloud attribute
-        this.attribute.ptcount = this.points.length ;
+        if (this.attribute.max > this.attribute.ptcount) {
+            //append the point to the pointcloud
+            append(this.points, xp);
+            //update the point count pointcloud attribute
+            this.attribute.ptcount = this.points.length;
 
-        //add the pointcloud reference attribute. this provides a symbolic structure to the pointcloud, however...
-        //doing it this way seems like a truly terrible idea. But it seems to work out ok, maybe??? it does permit access to any point directly from any other point which could be hugely useful.
-        xp.attribute.pcid = this.id;
+            //add the pointcloud reference attribute. this provides a symbolic structure to the pointcloud, however...
+            //doing it this way seems like a truly terrible idea. But it seems to work out ok, maybe??? it does permit access to any point directly from any other point which could be hugely useful.
+            xp.attribute.pcid = this.id;
+        }
     }
 
     //delete a given point
