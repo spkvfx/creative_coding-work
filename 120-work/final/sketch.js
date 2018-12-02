@@ -131,20 +131,17 @@ function draw() {
                 thisPoint.attribute.Cd = color(255,random(0,64),random(0,64)) ;
 
                 //set up a new point
-                //set the position of the new point to somehwehere near it's parent
-                const pos = {
+                const pos = {                //set the position of the new point to somehwehere near it's parent
                     x:thisPoint.attribute.P.x+random(-breed,breed),
                     y:thisPoint.attribute.P.y+random(-breed,breed)
                 } ;
-                //set to the initial force to the vector perpendicular to it's parent
-                const force = {
+                const force = {             //set to the initial force to the vector perpendicular to it's parent
                     x : thisPoint.attribute.F.y,
                     y : thisPoint.attribute.F.x * -1
                 } ;
-
                 //create child point
                 const newPoint = nursery(pos, force) ;
-                //set teh child point's color
+                //set the child point's color
                 newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128)) ;
             }
 
