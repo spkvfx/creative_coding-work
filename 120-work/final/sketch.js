@@ -4,7 +4,7 @@ let myPointcloud ;
 /////some parameters/////
 
 //number of particles to be born
-const number = 1000;
+const number = 250;
 
 //kill slow particles
 const sleep = 0.001 ;
@@ -55,6 +55,24 @@ function nursery(pos,force) {
         return newPoint
     }
     //console.log(newPoint) ;
+}
+
+function offspring(xp) {
+    //set up a new point
+    let pos = {                //set the position of the new point to somehwehere near it's parent
+        x : xp.attribute.P.x+random(-breed,breed),
+        y : xp.attribute.P.y+random(-breed,breed)
+    } ;
+    let force = {             //set to the initial force to the vector perpendicular to it's parent
+        x : xp.attribute.F.y,
+        y : xp.attribute.F.x * -1
+    } ;
+    //create child point
+    const newPoint = nursery(pos, force) ;
+    //set the child point's color
+    newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128)) ;
+
+    return newPoint
 }
 
 function setup() {
@@ -130,19 +148,9 @@ function draw() {
                 //change the color of the collided points
                 thisPoint.attribute.Cd = color(255,random(0,64),random(0,64)) ;
 
-                //set up a new point
-                const pos = {                //set the position of the new point to somehwehere near it's parent
-                    x:thisPoint.attribute.P.x+random(-breed,breed),
-                    y:thisPoint.attribute.P.y+random(-breed,breed)
-                } ;
-                const force = {             //set to the initial force to the vector perpendicular to it's parent
-                    x : thisPoint.attribute.F.y,
-                    y : thisPoint.attribute.F.x * -1
-                } ;
-                //create child point
-                const newPoint = nursery(pos, force) ;
-                //set the child point's color
-                newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128)) ;
+                offspring(thisPoint) ;
+                offspring(thisPoint.attribute.neighbor) ;
+
             }
 
             //line end point
@@ -161,6 +169,7 @@ function draw() {
         //kill stuck and distant points
         } else if (thisPoint.behavior.physics.active === false || thisPoint.attribute.P.x < -width || thisPoint.attribute.P.y < -height || thisPoint.attribute.P.x > width*2 || thisPoint.attribute.P.y > height*2){
             myPointcloud.remove(myPointcloud.points.indexOf(thisPoint)) ;
+            //console.log(thisPoint) ;
         }
     }
 }

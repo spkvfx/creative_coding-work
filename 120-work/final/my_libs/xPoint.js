@@ -5,19 +5,26 @@ function id_gen(size = 4) {
 class xPointcloud {
     //construct an empty array
     constructor(m = 5000) {
+        //unique ID. not really needed anymore, but kept it around for funzies
         this.id = id_gen();
-        this.points = [];      //array of points
+        //empty array to hold points
+        this.points = [];
+        //pointcloud attributes
         this.attribute = {
-            //point count (minimum requirement with default of zero)
+            //point count
             ptcount : 0,
+            //maximum number of points allowed. will ignore new points
             max : m
         }
     }
 
     //create a new point and append to the pointcloud
     spawn(x = 0, y = 0, z = 0) {
-        const xp = new XPoint(x,y,z)
+        //create the new point
+        const xp = new XPoint(x,y,z) ;
+        //append to this pointcloud
         this.append(xp) ;
+        //return the created point object
         return xp
     }
 
@@ -26,21 +33,20 @@ class xPointcloud {
         if (this.attribute.max > this.attribute.ptcount) {
             //append the point to the pointcloud
             append(this.points, xp);
+            append(xp.attribute.pcid,this.pcid) ;
             //update the point count pointcloud attribute
             this.attribute.ptcount = this.points.length;
-
-            //add the pointcloud reference attribute. this provides a symbolic structure to the pointcloud, however...
-            //doing it this way seems like a truly terrible idea. But it seems to work out ok, maybe??? it does permit access to any point directly from any other point which could be hugely useful.
-            xp.attribute.pcid = this.id;
+            //associate this pointcloud with the created point's pointcloud id attribute
         }
     }
 
-    //delete a given point
+    //delete a given point by it's index
     remove(index = 0)
     {
+        //get the target point
         const xp = this.points[index] ;
-        xp.attribute.pcid = null ;
         this.points.splice(index,1) ;
+        xp.attribute.pcid.splice(this.pcid,1) ;
         this.attribute.ptcount = this.points.length ;
     }
 
@@ -96,7 +102,7 @@ class XPoint {
         this.attribute = {} ;
         this.behavior = {} ;
         this.attribute['P'] = createVector(x, y, z) ;
-        this.attribute['pcid'] = null ;
+        this.attribute['pcid'] = [] ;
     }
 
     //visualize the xy projection of the xpoint as a p5 point() object
