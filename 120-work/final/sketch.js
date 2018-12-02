@@ -1,41 +1,115 @@
 
 let myPointcloud ;
+let activePoints = [];
 
 let targetPoint ;
 let nearestPoint ;
 
-const sleep = 0.05 ;
+const sleep = 0.01 ;
+
+
+const number = 300;
+
+let avoidance = 0 ;
+let attraction = 1.0 ;
+let bias = 2;
+
+let influence = 1 ;
+
+const breed = 0.1;
+;
 
 function setup() {
     myPointcloud = new xPointcloud() ;
     createCanvas(800,800) ;
+    background(5,10,30) ;
 
-    const number = 2;
-
+    let force = {x:0,y:0} ;
     for(let i = 0; i<number; i++) {
-        myPointcloud.spawn(random()*width, random()*height);
-        const newPoint = myPointcloud.points[i] ;
-        newPoint.attribute['v'] = createVector(0,0,0) ;
-        newPoint.attribute['F'] = createVector(0,25,0) ;
-        newPoint.attribute['mass'] = 10 ;
-        newPoint.attribute['drag'] = 0.01 ;
-        newPoint.physics = new Phxyz(myPointcloud.points[i])
+        const pos = {x:random()*width, y:random()*height} ;
+        nursery(pos, force);
     }
 
-    targetPoint = myPointcloud.points[int(number/2)] ;
-    nearestPoint = myPointcloud.nearest(targetPoint) ;
+    //targetPoint = myPointcloud.points[int(number/2)] ;
+    //nearestPoint = myPointcloud.nearest(targetPoint) ;
 
     console.log(myPointcloud);
+
+    activePoints = myPointcloud.points.slice(0) ;
 }
 
-function draw() {
-    targetPoint.physics.update();
+let a ;
+let b ;
 
-    background('white') ;
-    //noLoop() ;
-    myPointcloud.display() ;
-    targetPoint.emphasis('red',true) ;
-    nearestPoint.emphasis('blue',true) ;
+
+function draw() {
+    for (i = 0; i < myPointcloud.attribute.ptcount; i++) {
+        const thisPoint = myPointcloud.points[i] ;
+
+        //thisPoint.emphasis() ;
+        if (thisPoint.behavior.physics.active === true) {
+            myPointcloud.nearest(thisPoint) ;
+            //thisPoint.attribute.mass *= 1.01 ;
+
+            const P1 = thisPoint.attribute.neighbor.attribute.P ;
+            const P2 = thisPoint.attribute.P ;
+            const look = vect_sub(P1,P2).normalize() ;
+
+            const d = thisPoint.attribute.distance ;
+            const m = thisPoint.attribute.mass ;
+            const scale = random(-1*thisPoint.attribute.avoid,thisPoint.attribute.attract) ;
+
+            const force = look.mult(((m*influence)/d)*scale) ;
+            thisPoint.attribute.F.set(force.x,force.y) ;
+
+            const a = {
+                x : thisPoint.attribute.P.x,
+                y : thisPoint.attribute.P.y
+            } ;
+            thisPoint.behavior.physics.update(sleep);
+            if(d < breed*0.5) {
+                thisPoint.behavior.physics.collision(thisPoint.attribute.v.normalize())
+                //thisPoint.attribute.mass *= 0.90 ;
+                //thisPoint.attribute.v.mult(-2);
+                thisPoint.attribute.Cd = color(255,random(0,64),random(0,64)) ;
+
+                const pos = {
+                    x:thisPoint.attribute.P.x+random(-breed,breed),
+                    y:thisPoint.attribute.P.y+random(-breed,breed)} ;
+                const force = {
+                    x : thisPoint.attribute.v.y,
+                    y : thisPoint.attribute.v.x * -1
+                } ;
+                const newPoint = nursery(pos, force) ;
+                newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128))
+            }
+            const b = {
+                x : thisPoint.attribute.P.x,
+                y : thisPoint.attribute.P.y
+            } ;
+            strokeWeight(map(0.1/thisPoint.attribute.v.mag(),0,100,0.1,3)) ;
+            stroke(thisPoint.attribute.Cd) ;
+            line(a.x,a.y,b.x,b.y);
+        } else if (thisPoint.behavior.physics.active === false || thisPoint.attribute.P.x < -width || thisPoint.attribute.P.y < -height || thisPoint.attribute.P.x > width*2 || thisPoint.attribute.P.y > height*2){
+            myPointcloud.remove(myPointcloud.points.indexOf(thisPoint)) ;
+            //console.log(thisPoint) ;
+        }
+    }
+}
+
+function nursery(pos,force) {
+    const newPoint = myPointcloud.spawn(pos.x, pos.y);
+    newPoint.attribute['v'] = createVector() ;
+    newPoint.attribute['F'] = createVector(force.x,force.y) ;
+    newPoint.attribute['mass'] = 500 ;
+    newPoint.attribute['drag'] = 0.01 ;
+    newPoint.attribute['Cd'] = color(random(64,128),random(128,255),random(200,255)) ;
+    newPoint.attribute['avoid'] = random(bias,avoidance) ;
+    newPoint.attribute['attract'] = random(bias,attraction) ;
+    newPoint.behavior['physics'] = new Phxyz(newPoint);
+    newPoint.behavior.physics.active = true ;
+    return newPoint
+    //console.log(newPoint) ;
 }
 
 function id_gen(size = 4) {
@@ -49,10 +123,9 @@ class xPoint {
         this.id = id_gen() ;
         //position attribute (minimum requirement for creation)
         this.attribute = {} ;
+        this.behavior = {} ;
         this.attribute['P'] = createVector(x, y, z) ;
         this.attribute['pcid'] = null ;
-
-        this.physics = null ;
     }
 
     //visualize the xy projection of the xpoint as a p5 point() object
@@ -92,7 +165,9 @@ class xPointcloud {
 
     //create a new point and append to the pointcloud
     spawn(x = 0, y = 0, z = 0) {
-        this.append(new xPoint(x,y,z)) ;
+        const xp = new xPoint(x,y,z)
+        this.append(xp) ;
+        return xp
     }
 
     //append an existing point to the pointcloud
@@ -148,6 +223,8 @@ class xPointcloud {
                 const distance = xp.attribute.P.dist(target.attribute.P) ;
                 //if the distance from target and self is less than or is less than or equal to the
                 if (distance <= candidate || candidate == null) {
+                    xp.attribute['distance'] = distance ;
+                    xp.attribute['neighbor'] = target ;
                     neighbor = target ;
                     candidate = distance;
                 }
@@ -173,7 +250,7 @@ class Phxyz {
 
     }
 
-    update(thresh = 0.05) {
+    update(thresh = 0) {
         //update velocity as a function of force
         this.active = true ;
         this.obj.attribute.v = this.v.add(this.F.div(this.mass)).mult(1 - this.drag);
