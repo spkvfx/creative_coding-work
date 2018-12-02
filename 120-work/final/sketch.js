@@ -1,311 +1,168 @@
 
 let myPointcloud ;
-let activePoints = [];
 
-let targetPoint ;
-let nearestPoint ;
+/////some parameters/////
 
-const sleep = 0.01 ;
+//number of particles to be born
+const number = 1000;
 
+//kill slow particles
+const sleep = 0.001 ;
 
-const number = 300;
+//particle behavior
+const avoidance = 0.2 ;
+const attraction = 1 ;
+//negative to bias toward avoidance
+const bias = 0;
 
-let avoidance = 0 ;
-let attraction = 1.0 ;
-let bias = 2;
+//mass-distance influence curve
+const influence = 1 ;
 
-let influence = 1 ;
-
+//minimum radius to nearest neighbor to spawn (warning: no built-in maximum)
 const breed = 0.1;
-;
+
+//particle mass
+const pmass = 100 ;
+const pmass_variance = 10 ;
+
+//stroke
+const strokeScale = 0.2 ;
+const strokeOffset = 0.2 ;
+
+//drag
+const pdrag = 0.03;
+
+//make new points and assign attributes
+function nursery(pos,force) {
+    //maximum point count kludge
+    if (myPointcloud.attribute.ptcount < 5000) {
+        //create new points
+        const newPoint = myPointcloud.spawn(pos.x, pos.y);
+        //add attributes
+        newPoint.attribute['v'] = createVector(0,0,0) ;                                         //velocity
+        newPoint.attribute['F'] = createVector(force.x,force.y) ;                               //force
+        newPoint.attribute['mass'] = random(pmass,pmass*pmass_variance) ;                       //mass
+        newPoint.attribute['drag'] = pdrag  ;                                                   //drag (should be an external force, but thus far external forces do not exist)
+        newPoint.attribute['Cd'] = color(random(64,128),random(128,255),random(200,255)) ;      //Color
+        newPoint.attribute['avoid'] = random(bias,avoidance) ;                                  //avoidance probability
+        newPoint.attribute['attract'] = random(bias,attraction) ;                               //attraction probability
+        //add physics
+        newPoint.behavior['physics'] = new Phxyz(newPoint);
+        //flag physics behavior to "true"
+        newPoint.behavior.physics.active = true ;
+        //return the new xPoint object for easy access
+        return newPoint
+    }
+    //console.log(newPoint) ;
+}
 
 function setup() {
-    myPointcloud = new xPointcloud() ;
     createCanvas(800,800) ;
     background(5,10,30) ;
 
+    //inituialize a new point cloud
+    myPointcloud = new xPointcloud() ;
+
+    //set up force values
     let force = {x:0,y:0} ;
+    //spawn particles
     for(let i = 0; i<number; i++) {
-        const pos = {x:random()*width, y:random()*height} ;
-        nursery(pos, force);
+        const pos = {x:random()*width, y:random()*height} ;     //random positions
+        nursery(pos, force);                                    //spawn particles with required attributes
     }
 
-    //targetPoint = myPointcloud.points[int(number/2)] ;
-    //nearestPoint = myPointcloud.nearest(targetPoint) ;
+    //review the populated pointcloud
+    //console.log(myPointcloud);
 
-    console.log(myPointcloud);
-
-    activePoints = myPointcloud.points.slice(0) ;
+    //prevent blobs on first frame
+    strokeWeight(0) ;
 }
 
-let a ;
-let b ;
-
-
 function draw() {
+    //iterate over the point cloud
     for (i = 0; i < myPointcloud.attribute.ptcount; i++) {
+
+        //get the current point
         const thisPoint = myPointcloud.points[i] ;
 
-        //thisPoint.emphasis() ;
+        //check for points with an active physics behavior
         if (thisPoint.behavior.physics.active === true) {
-            myPointcloud.nearest(thisPoint) ;
-            //thisPoint.attribute.mass *= 1.01 ;
 
-            const P1 = thisPoint.attribute.neighbor.attribute.P ;
-            const P2 = thisPoint.attribute.P ;
+            //get the nearest point and the distance
+            myPointcloud.nearest(thisPoint) ;
+
+            //get the point positions
+            const P1 = thisPoint.attribute.neighbor.attribute.P ;       //the neighbor point positioon
+            const P2 = thisPoint.attribute.P ;                          //this point position
+
+            //calculate the vector betene the two points
             const look = vect_sub(P1,P2).normalize() ;
 
+            //get the distance of the current points from it's neighbor
             const d = thisPoint.attribute.distance ;
+            //get the mass of the current point
             const m = thisPoint.attribute.mass ;
+
+            //calculate the attractive force scale
             const scale = random(-1*thisPoint.attribute.avoid,thisPoint.attribute.attract) ;
 
+            //calculate for force vector
             const force = look.mult(((m*influence)/d)*scale) ;
+
+            //set the force vector to the force attribute
             thisPoint.attribute.F.set(force.x,force.y) ;
 
+            //line start point from position before update
             const a = {
                 x : thisPoint.attribute.P.x,
                 y : thisPoint.attribute.P.y
             } ;
+
+            //update the point
             thisPoint.behavior.physics.update(sleep);
-            if(d < breed*0.5) {
+
+            //spawn a new particle within breed radius
+            if(d < breed * 0.5) {
+                //collide the particles along the velocity axis
+                //this is mostly because it handles velocity and force automatically
                 thisPoint.behavior.physics.collision(thisPoint.attribute.v.normalize())
-                //thisPoint.attribute.mass *= 0.90 ;
-                //thisPoint.attribute.v.mult(-2);
+                //change the color of the collided points
                 thisPoint.attribute.Cd = color(255,random(0,64),random(0,64)) ;
 
+                //set up a new point
+                //set the position of the new point to somehwehere near it's parent
                 const pos = {
                     x:thisPoint.attribute.P.x+random(-breed,breed),
-                    y:thisPoint.attribute.P.y+random(-breed,breed)} ;
+                    y:thisPoint.attribute.P.y+random(-breed,breed)
+                } ;
+                //set to the initial force to the vector perpendicular to it's parent
                 const force = {
                     x : thisPoint.attribute.v.y,
                     y : thisPoint.attribute.v.x * -1
                 } ;
+
+                //create child point
                 const newPoint = nursery(pos, force) ;
-                newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128))
+                //set teh child point's color
+                newPoint.attribute.Cd = color(random(128,255),random(128,255),random(64,128)) ;
             }
+
+            //line end point
             const b = {
                 x : thisPoint.attribute.P.x,
                 y : thisPoint.attribute.P.y
             } ;
-            strokeWeight(map(0.1/thisPoint.attribute.v.mag(),0,100,0.1,3)) ;
+
+            //apply color attribute to stroke
             stroke(thisPoint.attribute.Cd) ;
+            //draw the trailing line
             line(a.x,a.y,b.x,b.y);
+            //apply stroke thickness (placed here to avoids blobs on first frame)
+            strokeWeight((1/(1+pow(2,(-5*(thisPoint.attribute.v.mag()-1))))) * strokeScale + strokeOffset) ;
+
+        //kill stuck and distant points
         } else if (thisPoint.behavior.physics.active === false || thisPoint.attribute.P.x < -width || thisPoint.attribute.P.y < -height || thisPoint.attribute.P.x > width*2 || thisPoint.attribute.P.y > height*2){
             myPointcloud.remove(myPointcloud.points.indexOf(thisPoint)) ;
-            //console.log(thisPoint) ;
         }
     }
-}
-
-function nursery(pos,force) {
-    const newPoint = myPointcloud.spawn(pos.x, pos.y);
-    newPoint.attribute['v'] = createVector() ;
-    newPoint.attribute['F'] = createVector(force.x,force.y) ;
-    newPoint.attribute['mass'] = 500 ;
-    newPoint.attribute['drag'] = 0.01 ;
-    newPoint.attribute['Cd'] = color(random(64,128),random(128,255),random(200,255)) ;
-    newPoint.attribute['avoid'] = random(bias,avoidance) ;
-    newPoint.attribute['attract'] = random(bias,attraction) ;
-    newPoint.behavior['physics'] = new Phxyz(newPoint);
-    newPoint.behavior.physics.active = true ;
-    return newPoint
-    //console.log(newPoint) ;
-}
-
-function id_gen(size = 4) {
-    return crypto.getRandomValues(new Uint32Array(size)).join('-');
-}
-
-//point class
-class xPoint {
-    constructor(x = 0,y = 0, z = 0) {
-        //arbitrary id just because it might be useful
-        this.id = id_gen() ;
-        //position attribute (minimum requirement for creation)
-        this.attribute = {} ;
-        this.behavior = {} ;
-        this.attribute['P'] = createVector(x, y, z) ;
-        this.attribute['pcid'] = null ;
-    }
-
-    //visualize the xy projection of the xpoint as a p5 point() object
-    display() {
-        point(this.attribute.P.x,this.attribute.P.y) ;
-    }
-
-    emphasis(color = 'red', circled = true) {
-        push();
-            stroke('black') ;
-            if(circled === false) {
-                stroke(color) ;
-            }
-            this.display() ;
-        pop() ;
-        if(circled === true) {
-            push();
-                noFill();
-                strokeWeight(0.5);
-            stroke(color);
-                ellipse(this.attribute.P.x, this.attribute.P.y, 10, 10);
-            pop();
-        }
-    }
-}
-
-class xPointcloud {
-    //construct an empty array
-    constructor() {
-        this.id = id_gen();
-        this.points = [];      //array of points
-        this.attribute = {
-            //point count (minimum requirement with default of zero)
-            ptcount : 0
-        }
-    }
-
-    //create a new point and append to the pointcloud
-    spawn(x = 0, y = 0, z = 0) {
-        const xp = new xPoint(x,y,z)
-        this.append(xp) ;
-        return xp
-    }
-
-    //append an existing point to the pointcloud
-    append(xp) {
-        //append the point to the pointcloud
-        append(this.points, xp) ;
-        //update the point count pointcloud attribute
-        this.attribute.ptcount = this.points.length ;
-
-        //add the pointcloud reference attribute. this provides a symbolic structure to the pointcloud, however...
-        //doing it this way seems like a truly terrible idea. But it seems to work out ok, maybe??? it does permit access to any point directly from any other point which could be hugely useful.
-        xp.attribute.pcid = this;
-    }
-
-    //delete a given point
-    remove(index = 0)
-    {
-        const xp = this.points[index] ;
-        xp.attribute.pcid = null ;
-        this.points.splice(index,1) ;
-        this.attribute.ptcount = this.points.length ;
-    }
-
-    //clear all points
-    clear()
-    {
-        const ptcount = this.attribute.ptcount ;
-        for(let i = 0; i<ptcount; i++) {
-            this.remove();
-        }
-    }
-
-    display() {
-        if (this.attribute.ptcount !== 0) {
-            for (let i = 0; i < this.attribute.ptcount; i++) {
-                this.points[i].display();
-            }
-        }
-    }
-
-    //get the closest point and set to the Neighbor attribute
-    nearest(xp) {
-        //the best candidate
-        let candidate = null ;
-        let neighbor = null ;
-        //iterate over the pointcloud
-        for (let i = 0; i < this.attribute.ptcount; i++) {
-            //set the target point to the current pointcloud point
-            const target = this.points[i] ;
-            //exclude self from evaluation
-            if (target !== xp) {
-                //measure distance between the target and self
-                const distance = xp.attribute.P.dist(target.attribute.P) ;
-                //if the distance from target and self is less than or is less than or equal to the
-                if (distance <= candidate || candidate == null) {
-                    xp.attribute['distance'] = distance ;
-                    xp.attribute['neighbor'] = target ;
-                    neighbor = target ;
-                    candidate = distance;
-                }
-            }
-        }
-        return neighbor ;
-    }
-}
-
-class Phxyz {
-    constructor(obj) {
-
-        this.obj  = obj;
-        //set up attributes
-        this.P = obj.attribute.P ; //position vector
-        this.v = obj.attribute.v ;
-        this.F = obj.attribute.F ; //force vector
-
-        this.mass = obj.attribute.mass ; //mass
-        this.drag = obj.attribute.drag ;
-
-        this.active = false ;
-
-    }
-
-    update(thresh = 0) {
-        //update velocity as a function of force
-        this.active = true ;
-        this.obj.attribute.v = this.v.add(this.F.div(this.mass)).mult(1 - this.drag);
-        if(this.obj.attribute.v.mag() > thresh) {
-            this.obj.attribute.P.add(this.obj.attribute.v);
-        } else {
-            this.sleep() ;
-        }
-    }
-
-    sleep() {
-        this.obj.attribute.v.mult(0)  ;
-        this.obj.attribute.F.mult(0) ;
-        this.active = false ;
-    }
-
-    collision(normal) {
-        //get parameters
-        const n = normal.copy() ;      // unit vector
-        const d = this.v ;             // vector
-
-        //solve terms
-        const dot = d.dot(n) * 2;      // scalar
-        const n2 = n.mult(dot) ;       // vector
-
-        //update velocity
-        this.v = vect_sub(d,n2) ;      // vector
-    }
-
-    //make 2D translations
-    //along xy axis
-    xy(tx_ = 0, ty_ = 0) {
-        return translate(this.P.x+tx_,this.P.y+ty_) ;
-    }
-
-    //along xz axis
-    xz(tx_ = 0, ty_ = 0) {
-        return translate(this.P.x+tx_,this.P.z+ty_) ;
-    }
-
-    //along xz axis
-    zy(tx_ = 0, ty_ = 0) {
-        return translate(this.P.z+tx_,this.P.y+ty_) ;
-    }
-}
-
-//additional vector operations
-function vect_mult(a,b) {
-    return createVector(a.x * b.x, a.y * b.y, a.z * b.z)
-}
-
-function vect_sub(a, b) {
-    return createVector(a.x - b.x, a.y - b.y, a.z - b.z)
-}
-
-function vect_add(a, b) {
-    return createVector(a.x + b.x, a.y + b.y, a.z + b.z)
 }

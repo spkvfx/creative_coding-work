@@ -56,7 +56,7 @@ function draw() {
     //const r = myPointcloud.points[0].Dist ;
 
 
-    //myPointcloud.append(new xPoint(id, random(-r, r), random(-r, r)));
+    //myPointcloud.append(new XPoint(id, random(-r, r), random(-r, r)));
     let newPoints = [] ;
     for (let i = 0; i < myPointcloud.points.length; i++) {
         myPointcloud.points[i].getClosest(myPointcloud) ;
