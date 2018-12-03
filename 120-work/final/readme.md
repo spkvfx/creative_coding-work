@@ -77,7 +77,7 @@ The proposal called for a few features that were not implemented. Mass modificat
 For simplicity sake, I also used Phxyz.collide with the normal being th unit vector of velocity since it handles attributes automatically. In this case though it would have the same effect as simply negating velocity.
 
 #### Code Reuse
-As mentioned one goal was to improve code reuse of my xPoint and Phxyz objects. I wanted to get this code as modular as possible so that it could be used like a proper library. Indeed, the project itself was not very difficult, but getting a system in place that was modular and portable took quite some time.
+As mentioned one goal was to improve code reuse of my xPoint and Phxyz libraries. I wanted to get this code as modular as possible so that it could be used like a proper library. Indeed, the project itself was not very difficult, but getting a system in place that was modular and portable took quite some time.
 
 So I went about looking into the very complex and annoying world of javascript modules. However, while I was able to get my modules up and running I was having a lot of trouble getting it all to work with p5. 
 
