@@ -157,7 +157,7 @@ function offspring(xp) {
     myPointcloud.behavior.physics.obj = xp ;
     //collide the particles along the velocity axis
     //uses Phxyz.collision() because it handles velocity and force automatically
-    myPointcloud.behavior.physics.collision(xp.attribute.v.normalize()) ;
+    myPointcloud.behavior.physics.collision(xp.attribute.v.normalize().mult(-1)) ;
     //change the color of the collided points
     xp.attribute.Cd = color(255,random(0,64),random(0,64)) ;
 

@@ -43,9 +43,55 @@ Using the attribute{} object specific attributes can be passed between individua
 **xPoint.js**<br>
 This javascript library is responsible for handling points and pointclouds. Points may be *structured* or *unstructured*. Structured points are associated with a pointcloud class object, while unstructured points are not. 
 
-Pointcloud objects are a collection of points. This permits allowing points to be manipulated as a group together, such as finding neighbors.
+Pointcloud objects are a collection of points. This permits allowing points to be manipulated as a group together, such as finding neighbors. 
+
+Both points and pointclouds have attribute{} and behavior{} objects. Attributes store information about the point or pointcloud at a given time while behaviors are to store instances of classes that affect the values of attributes.
+
+Naturally, these could be saved as their own properties, but I felt that packaging them up into corresponding objects made organizations sense, rather than just having them floating around.
+
+**Phxyz.js**<br>
+This is an updated version of the library created for PongSolo in week 7. It now expects the xPoint attribute object to read and manipulate attributes.
+
+The goal for this class is to create a low-level physics library for javascript. It's intended use is to give access to fundamental simulation tools, rather than to say "here is an object, bounce off this when collided."
+
+It's definitely a work in progress, and there needs to be many additional tools provided. So far I have a basic positional solver to update velocity and position according to force, taking into account mass and drag. I also have basic vector mirroring for point collision.
+
+**sketch.js**<br>
+The main sketch works pretty much as described in the proposal. 
+
+As discussed, a point cloud is populated with random points. The point's nearest neighbor is solved, and their attraction tendancy is determined on each frame: with a higher attraction to avoidance ratio the point's force vector is increased in the direction of the neighbor.
+
+Once the particle's distance drops below a given value, several things happen:
+
+* The particle and it's neighbor changes direction using the phyxyz.collide with the normal set to the unit vector of velocity.
+
+* A child particle is born and is given a force equal to the perpendicular of the parent's velocity, and has a yellow color. 
+
+* The color of the parent particle changes from blue to red.
+
+Because particles are moving very quickly as they approach one another, this has the effect of flinging children and parents away from the collision.
+
+####Differences from the Proposal
+The proposal called for a few features that were not implemented. Mass modification was removed, just because it proved either inconsequential or completely unstable. I also thought I needed an averarge of all distances, but once I got a few particles moving up I did not think this was necessary.
+
+For simplicity sake, I also used Phxyz.collide with the normal being th unit vector of velocity since it handles attributes automatically. In this case though it would have the same effect as simply negating velocity.
 
 ####Code Reuse
-As mentioned one goal was to improve code reuse of my xPoint and Phxyz objects. I wanted to get this code as modular as possible so that it could be used like a proper library. So I went about looking into the very complex and annoying world of javascript libraries. However, while I was able to get my modules up and running I was having a lot of trouble getting it all to work with p5. 
+As mentioned one goal was to improve code reuse of my xPoint and Phxyz objects. I wanted to get this code as modular as possible so that it could be used like a proper library. Indeed, the project itself was not very difficult, but getting a system in place that was modular and portable took quite some time.
 
-The main issue here was I was having difficulty understanding how to import p5 as a module, and I am not even sure if it was possible. When I got things to work "ok" I ended up having an instance.
+So I went about looking into the very complex and annoying world of javascript modules. However, while I was able to get my modules up and running I was having a lot of trouble getting it all to work with p5. 
+
+The main issue here was difficulty understanding how to import p5 as a module. I am not even sure if it is possible. When I got things to work "ok" I ended up having an instance of p5 for each and every particle object. This did not set well with me.
+
+Eventually I did get it to work, but once I had it working in a single p5 instance, I introduced reuse issues that defeated the purpose. I ended up just returning to the scheme I've been using and forgetting about E6 modules entirely.
+
+####Behavior Scopes
+Behaviors can be applied to either individual particles, or the entire pointcloud, so when I started deciding how to approach how to manipulate attributes via behaviors the obvious solution was to simply have each point object inheret physics functionality from Phxyz.js.
+
+Bt because I wanted all of this to be modular and independent, with each module useable without requiring any other component, this didn't work well. So instead I simply added a physics behavior to every single particle, using itself as the target object.
+
+While writing this I realized that it would make more sense to place the physics behavior in the pointcloud behavior{} object. So I ended up with hundreds of instances of the entire Phxyz class.
+
+While writing this it occured to me that I could instead have just one instance of the Phxyz library and associate it with the Pointcloud instead, simply changing the Phxyz.obj property to the targetted point.
+
+While I do not know if there is any performance advantage here, the scheme is more in line conceptually with how I see this system working.
