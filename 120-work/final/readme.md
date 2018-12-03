@@ -95,7 +95,7 @@ While writing this I realized that it would make more sense to place the physics
 While I do not know if there is any performance advantage here (id imagine there would be), the scheme is more in line conceptually with how I see this system working.
 
 #### Point Structure
-I was not sure how I wanted to structure the points within a pointcloud. I knew I wanted some way to reference the pointcloud a point belonged to, but had a difficult time understanding how I wanted this reference to work.
+I was not immediately sure how I wanted to structure the points within a pointcloud. I knew I wanted some way to reference the pointcloud a point belonged to, but had a difficult time understanding how I wanted this reference to work.
 
 I tried assigning the point cloud to a point attribute, and as expected I had this recursive loop where the point referenced the pointcloud and the pointcloud in turn referenced the point. In the console I could endlessly expose the pointcloud, and from the pointcloud the point, and then the pointcloud again.
 
