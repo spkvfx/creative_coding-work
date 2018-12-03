@@ -29,13 +29,13 @@ I am dedicating approximately 14-20 hours to this project, six hours of which ar
 
 ---
 
-###Discussion
+### Discussion
 
 This project was a bit more involved than I initially anticipated, though, aside from a few details is pretty much how I anticipated it.
 
 Aside from the objective goals listed in my proposal, I also wanted to clean up past code and improve code reuse. All together, it took much longer to complete than I anticipated, even when not taking into account some wrong turns that were not included.
 
-####Application Theory
+#### Application Theory
 The code relies on two custom libraries, xPoint.js and Phxyz.js that were initially developed for earlier assignments. Phxyz.js was updated to accept the attribute{} object from xPoint.js and facilitate further development using this framework.
 
 Using the attribute{} object specific attributes can be passed between individual points and the Phxyz.js library that influences their behavior.
@@ -71,12 +71,12 @@ Once the particle's distance drops below a given value, several things happen:
 
 Because particles are moving very quickly as they approach one another, this has the effect of flinging children and parents away from the collision.
 
-####Differences from the Proposal
+#### Differences from the Proposal
 The proposal called for a few features that were not implemented. Mass modification was removed, just because it proved either inconsequential or completely unstable. I also thought I needed an averarge of all distances, but once I got a few particles moving up I did not think this was necessary.
 
 For simplicity sake, I also used Phxyz.collide with the normal being th unit vector of velocity since it handles attributes automatically. In this case though it would have the same effect as simply negating velocity.
 
-####Code Reuse
+#### Code Reuse
 As mentioned one goal was to improve code reuse of my xPoint and Phxyz objects. I wanted to get this code as modular as possible so that it could be used like a proper library. Indeed, the project itself was not very difficult, but getting a system in place that was modular and portable took quite some time.
 
 So I went about looking into the very complex and annoying world of javascript modules. However, while I was able to get my modules up and running I was having a lot of trouble getting it all to work with p5. 
@@ -85,7 +85,7 @@ The main issue here was difficulty understanding how to import p5 as a module. I
 
 Eventually I did get it to work, but once I had it working in a single p5 instance, I introduced reuse issues that defeated the purpose. I ended up just returning to the scheme I've been using and forgetting about E6 modules entirely.
 
-####Behavior Scopes
+#### Behavior Scopes
 Behaviors can be applied to either individual particles, or the entire pointcloud, so when I started deciding how to approach how to manipulate attributes via behaviors the obvious solution was to simply have each point object inheret physics functionality from Phxyz.js.
 
 Bt because I wanted all of this to be modular and independent, with each module useable without requiring any other component, this didn't work well. So instead I simply added a physics behavior to every single particle, using itself as the target object.
@@ -96,23 +96,23 @@ While writing this it occurred to me that I could instead have just one instance
 
 While I do not know if there is any performance advantage here (id imagine there would be), the scheme is more in line conceptually with how I see this system working.
 
-####Zero Distance Bug
+#### Zero Distance Bug
 One issue that I had some trouble understanding was that I initially placed the child particles directly at the same position as the parent, which caused an infinite loop scenario. To resolve this I instead had child points spawn at a random point near the parent. It is theoretically plausible that a subsequent child could be born here (and it does happen), but it will no longer result in a loop condition.
 
-####Distant Parent Bug
+#### Distant Parent Bug
 When I envisioned the algorithm in the proposal, I imagined two child particles being spawned upon collision, one for the each point. However, what I found was that once the neighbor is evaluated, it is no longer close enough to spawn a child.
 
 As a kludge, I simply forced both the target and it's neighbor to spawn a child and change colors, rather than to depend on the neighbor being close enough to trigger this action.
 
-####Maximum Particle Count
+#### Maximum Particle Count
 It became very apparent to me that I needed some way to control the total number of points in a pointcloud to prevent crashing since some configurations would lead to tightly clustered points that rapidly spawn children.
 
 I initially prototyped this within the nursery() function, but eventually moved this feature into the Pointcloud class itself. By default, Pointclouds have a maximum count of 5000 points, at which point no new points are added.
 
-####Line Width
+#### Line Width
 I knew pretty early on I wanted the speed of points to influence the stroke width, with faster moving points having a smaller stroke. I tried a few methods using map(), but ultimately used an approximate sigmoid function of speed with scale and offset.
 
-####Conclusion
+#### Conclusion
 Overall this project was deceptively difficult. I knew that I had a lot of work to get everything up and running, but I definitely under-estimated the logistics involved with getting all of my classes to talk to one another without breaking them or making them intrinsically tied to one another. Overall I probably did spend about three times as much effort on this project that I did on the typical weekly assignment. However, most of this was involved with goals that are not neccesarily visible in this example.
 
 Nonetheless, I am happy with the project and the product, and I feel my overall understanding of topics such as code reuse and modularity have improved.
