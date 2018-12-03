@@ -90,7 +90,7 @@ Behaviors can be applied to either individual particles, or the entire pointclou
 
 Bt because I wanted all of this to be modular and independent, with each module useable without requiring any other component, this didn't work well. So instead I simply added a physics behavior to every single particle, using itself as the target object.
 
-While writing this I realized that it would make more sense to place the physics behavior in the pointcloud behavior{} object. So I ended up with hundreds of instances of the entire Phxyz class.
+While writing this I realized that it would make more sense to place the physics behavior in the pointcloud behavior{} object. This avoids ended up with hundreds of instances of the entire Phxyz class.
 
 While writing this it occurred to me that I could instead have just one instance of the Phxyz library and associate it with the Pointcloud instead, simply changing the Phxyz.obj property to the targetted point.
 
