@@ -76,7 +76,7 @@ The proposal called for a few features that were not implemented. Mass modificat
 
 I also used Phxyz.collide() with the collision normal being a perpendicular of the velocity. Phxyz.collide() handles velocity and force updates automatically.
 
-This, of course is not a physically accurate collision.
+This, of course is not a physically accurate collision with energy is not being conserved.
 
 #### Code Reuse
 As mentioned one goal was to improve code reuse of my xPoint and Phxyz libraries. I wanted to get this code as modular as possible so that it could be used like a proper library. Indeed, the project itself was not very difficult, but getting a system in place that was modular and portable took quite some time.
