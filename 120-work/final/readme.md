@@ -94,4 +94,12 @@ While writing this I realized that it would make more sense to place the physics
 
 While writing this it occured to me that I could instead have just one instance of the Phxyz library and associate it with the Pointcloud instead, simply changing the Phxyz.obj property to the targetted point.
 
-While I do not know if there is any performance advantage here, the scheme is more in line conceptually with how I see this system working.
+While I do not know if there is any performance advantage here (id imagine there would be), the scheme is more in line conceptually with how I see this system working.
+
+####Zero Distance Bug
+One issue that I had some trouble understanding was that I initially placed the child particles directly at the same position as the parent, which caused an infinite loop scenario. To resolve this I instead had child points spawn at a random point near the parent. It is theoretically plausible that a subsequent child could be born here (and it does happen), but it will no longer result in a loop condition.
+
+####Distant Parent Bug
+When I envisioned the algorithm in the proposal, I imagined two child particles being spawned upon collision, one for the each point. However, what I found was that once the neighbor is evaluated, it is no longer close enough to spawn a child.
+
+As a kludge, I simply forced both the target and it's neighbor to spawn a child and change colors, rather than to depend on the neighbor being close enough to trigger this action.

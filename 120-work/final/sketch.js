@@ -128,27 +128,24 @@ function draw() {
 
 //make new points and assign attributes
 function nursery(pos,force) {
-    //maximum point count kludge
-    if (myPointcloud.attribute.ptcount < 5000) {
-        //create new points
-        const newPoint = myPointcloud.spawn(pos.x, pos.y);
-        //add attributes
-        if(newPoint != null) {
-            newPoint.attribute['v'] = createVector(0, 0, 0);                                         //velocity
-            newPoint.attribute['F'] = createVector(force.x, force.y);                               //force
-            newPoint.attribute['mass'] = random(pmass, pmass * pmass_variance);                       //mass
-            newPoint.attribute['drag'] = pdrag;                                                   //drag (should be an external force, but thus far external forces do not exist)
-            newPoint.attribute['Cd'] = color(random(64, 128), random(128, 255), random(200, 255));      //Color
-            newPoint.attribute['avoid'] = random(bias, avoidance);                                  //avoidance probability
-            newPoint.attribute['attract'] = random(bias, attraction);                               //attraction probability
-            newPoint.attribute['active'] = true ;
-            //add physics
-            //newPoint.behavior['physics'] = new Phxyz(newPoint);
-            //flag physics behavior to "true"
-            //newPoint.behavior.physics.active = true;
-            //return the new xPoint object for easy access
-        }
-        return newPoint
+    //create new points
+    const newPoint = myPointcloud.spawn(pos.x, pos.y);
+    //add attributes
+    if(newPoint != null) {
+        newPoint.attribute['v'] = createVector(0, 0, 0);                                         //velocity
+        newPoint.attribute['F'] = createVector(force.x, force.y);                               //force
+        newPoint.attribute['mass'] = random(pmass, pmass * pmass_variance);                       //mass
+        newPoint.attribute['drag'] = pdrag;                                                   //drag (should be an external force, but thus far external forces do not exist)
+        newPoint.attribute['Cd'] = color(random(64, 128), random(128, 255), random(200, 255));      //Color
+        newPoint.attribute['avoid'] = random(bias, avoidance);                                  //avoidance probability
+        newPoint.attribute['attract'] = random(bias, attraction);                               //attraction probability
+        newPoint.attribute['active'] = true ;
+        //add physics
+        //newPoint.behavior['physics'] = new Phxyz(newPoint);
+        //flag physics behavior to "true"
+        //newPoint.behavior.physics.active = true;
+        //return the new xPoint object for easy access
+    return newPoint
     }
     //console.log(newPoint) ;
 }
