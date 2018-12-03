@@ -59,7 +59,7 @@ It's definitely a work in progress, and there needs to be many additional tools 
 **sketch.js**<br>
 The main sketch works pretty much as described in the proposal. 
 
-As discussed, a point cloud is populated with random points. The point's nearest neighbor is solved, and their attraction tendancy is determined on each frame: with a higher attraction to avoidance ratio the point's force vector is increased in the direction of the neighbor.
+As discussed, a point cloud is populated with random points. The point's nearest neighbor is solved, and their attraction tendency is determined on each frame: with a higher attraction to avoidance ratio the point's force vector is increased in the direction of the neighbor.
 
 Once the particle's distance drops below a given value, several things happen:
 
@@ -72,9 +72,11 @@ Once the particle's distance drops below a given value, several things happen:
 Because particles are moving very quickly as they approach one another, this has the effect of flinging children and parents away from the collision.
 
 #### Differences from the Proposal
-The proposal called for a few features that were not implemented. Mass modification was removed, just because it proved either inconsequential or completely unstable. I also thought I needed an averarge of all distances, but once I got a few particles moving up I did not think this was necessary.
+The proposal called for a few features that were not implemented. Mass modification was removed, just because it proved either inconsequential or completely unstable. I also thought I needed an average of all distances, but once I got a few particles moving up I did not think this was necessary.
 
-For simplicity sake, I also used Phxyz.collide with the normal being th unit vector of velocity since it handles attributes automatically. In this case though it would have the same effect as simply negating velocity.
+For simplicity sake, I also used Phxyz.collide() with the collision normal being the inverse unit vector of velocity since it handles attributes automatically. In this case though it would have the same effect as simply negating velocity.
+
+This, of course is not a physically accurate collision.
 
 #### Code Reuse
 As mentioned one goal was to improve code reuse of my xPoint and Phxyz libraries. I wanted to get this code as modular as possible so that it could be used like a proper library. Indeed, the project itself was not very difficult, but getting a system in place that was modular and portable took quite some time.
