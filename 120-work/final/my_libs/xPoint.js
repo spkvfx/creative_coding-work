@@ -49,7 +49,7 @@ class xPointcloud {
         }
     }
 
-    //delete a given point by it's index
+    //delete a given point
     remove(xp)
     {
         const index = this.points.indexOf(xp) ;
@@ -71,6 +71,7 @@ class xPointcloud {
         }
     }
 
+    //display all points in the pointcloud
     display() {
         if (this.attribute.ptcount !== 0) {
             for (let i = 0; i < this.attribute.ptcount; i++) {
@@ -81,9 +82,11 @@ class xPointcloud {
 
     //get the closest point and set to the Neighbor attribute
     nearest(xp) {
-        //the best candidate
+        //the best candidate distance
         let candidate = null ;
+        //it's corresponding point
         let neighbor = null ;
+
         //iterate over the pointcloud
         for (let i = 0; i < this.attribute.ptcount; i++) {
             //set the target point to the current pointcloud point
@@ -92,7 +95,9 @@ class xPointcloud {
             if (target !== xp) {
                 //measure distance between the target and self
                 const distance = xp.attribute.P.dist(target.attribute.P) ;
-                //if the distance from target and self is less than or is less than or equal to the
+                //if the distance from target and self is less than or equal to the candidate distance:
+                //assign the neighbor to the target and the candidate distance to this distance
+                //the shortest distance and corresponding neighbor will remain once the for loop is complete
                 if (distance <= candidate || candidate == null) {
                     xp.attribute['distance'] = distance ;
                     xp.attribute['neighbor'] = target ;
@@ -101,6 +106,7 @@ class xPointcloud {
                 }
             }
         }
+        //return the neighbor
         return neighbor ;
     }
 }
