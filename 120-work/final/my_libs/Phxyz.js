@@ -5,26 +5,26 @@
 //P
 //F
 //v
+//active
 
 class Phxyz {
     constructor(obj = null) {
         //arbitrary id
         this.id = id_gen() ;
-
         //the object to apply physics to
         this.obj  = obj;
-        //activation flag
     }
 
     //update attributes
     update(thresh = 0) {
-        //activate
+        //activate the object
         this.obj.attribute.active = true ;
         //update velocity from force
         this.obj.attribute.v = this.obj.attribute.v.add(this.obj.attribute.F.div(this.obj.attribute.mass)).mult(1 - this.obj.attribute.drag);
         //update position if velocity is greater than sleep threshold
         if(this.obj.attribute.v.mag() > thresh) {
             this.obj.attribute.P.add(this.obj.attribute.v);
+        //otherwise deactivate the object
         } else {
             this.sleep() ;
         }
@@ -35,10 +35,12 @@ class Phxyz {
         //clear attributes
         this.obj.attribute.v.mult(0) ;      //velocity
         this.obj.attribute.F.mult(0) ;      //force
+        //flag inactive
         this.obj.attribute.active = false ;
     }
 
     //collision handling
+    //suitable for static colliders only
     collision(normal) {
         //activate
         this.obj.attribute.active = true ;
