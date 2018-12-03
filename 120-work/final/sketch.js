@@ -57,10 +57,10 @@ function draw() {
     for (let i = 0; i < myPointcloud.attribute.ptcount; i++) {
         //get the current point
         const thisPoint = myPointcloud.points[i] ;
-        //get the nearest point and the distance
-        myPointcloud.nearest(thisPoint) ;
         //check for points with an active physics behavior
         if (thisPoint.attribute.active === true) {
+            //get the nearest point and the distance
+            myPointcloud.nearest(thisPoint) ;
             //get the point positions
             const P1 = thisPoint.attribute.neighbor.attribute.P ;       //the neighbor point positioon
             const P2 = thisPoint.attribute.P ;                          //this point position
