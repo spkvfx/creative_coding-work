@@ -92,7 +92,7 @@ Bt because I wanted all of this to be modular and independent, with each module 
 
 While writing this I realized that it would make more sense to place the physics behavior in the pointcloud behavior{} object. So I ended up with hundreds of instances of the entire Phxyz class.
 
-While writing this it occured to me that I could instead have just one instance of the Phxyz library and associate it with the Pointcloud instead, simply changing the Phxyz.obj property to the targetted point.
+While writing this it occurred to me that I could instead have just one instance of the Phxyz library and associate it with the Pointcloud instead, simply changing the Phxyz.obj property to the targetted point.
 
 While I do not know if there is any performance advantage here (id imagine there would be), the scheme is more in line conceptually with how I see this system working.
 
@@ -103,3 +103,8 @@ One issue that I had some trouble understanding was that I initially placed the 
 When I envisioned the algorithm in the proposal, I imagined two child particles being spawned upon collision, one for the each point. However, what I found was that once the neighbor is evaluated, it is no longer close enough to spawn a child.
 
 As a kludge, I simply forced both the target and it's neighbor to spawn a child and change colors, rather than to depend on the neighbor being close enough to trigger this action.
+
+####Maximum Particle Count
+It became very apparent to me that I needed some way to control the total number of points in a pointcloud to prevent crashing since some configurations would lead to tightly clustered points that rapidly spawn children.
+
+I initially prototyped this within the nursery() function, but eventually moved this feature into the Pointcloud class itself. By default, Pointclouds have a maximum count of 5000 points, at which point no new points are added. 
