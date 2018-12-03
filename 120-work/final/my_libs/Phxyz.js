@@ -7,20 +7,19 @@
 //v
 
 class Phxyz {
-    constructor(obj) {
+    constructor(obj = null) {
         //arbitrary id
         this.id = id_gen() ;
 
         //the object to apply physics to
         this.obj  = obj;
         //activation flag
-        this.active = false ;
     }
 
     //update attributes
     update(thresh = 0) {
         //activate
-        this.active = true ;
+        this.obj.attribute.active = true ;
         //update velocity from force
         this.obj.attribute.v = this.obj.attribute.v.add(this.obj.attribute.F.div(this.obj.attribute.mass)).mult(1 - this.obj.attribute.drag);
         //update position if velocity is greater than sleep threshold
@@ -36,13 +35,13 @@ class Phxyz {
         //clear attributes
         this.obj.attribute.v.mult(0) ;      //velocity
         this.obj.attribute.F.mult(0) ;      //force
-        this.active = false ;
+        this.obj.attribute.active = false ;
     }
 
     //collision handling
     collision(normal) {
         //activate
-        this.active = true ;
+        this.obj.attribute.active = true ;
         //get parameters
         const n = normal.copy() ;                    // unit vector
         const d = this.obj.attribute.v ;             // vector

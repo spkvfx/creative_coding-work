@@ -12,7 +12,8 @@ class xPointcloud {
             ptcount : 0,
             //maximum number of points allowed. will ignore new points
             max : m
-        }
+        } ;
+        this.behavior = {}
     }
 
     //create a new point and append to the pointcloud
