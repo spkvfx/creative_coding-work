@@ -74,7 +74,7 @@ Because particles are moving very quickly as they approach one another, this has
 #### Differences from the Proposal
 The proposal called for a few features that were not implemented. Mass modification was removed, just because it proved either inconsequential or completely unstable. I also thought I needed an average of all distances, but once I got a few particles moving up I did not think this was necessary.
 
-For simplicity sake, I also used Phxyz.collide() with the collision normal being the inverse unit vector of velocity since it handles attributes automatically. In this case though it would have the same effect as simply negating velocity.
+I also used Phxyz.collide() with the collision normal being a perpendicular of the velocity. Phxyz.collide() handles velocity and force updates automatically.
 
 This, of course is not a physically accurate collision.
 

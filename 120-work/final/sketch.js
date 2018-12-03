@@ -57,11 +57,10 @@ function draw() {
     for (let i = 0; i < myPointcloud.attribute.ptcount; i++) {
         //get the current point
         const thisPoint = myPointcloud.points[i] ;
+        //get the nearest point and the distance
+        myPointcloud.nearest(thisPoint) ;
         //check for points with an active physics behavior
         if (thisPoint.attribute.active === true) {
-            //get the nearest point and the distance
-            myPointcloud.nearest(thisPoint) ;
-
             //get the point positions
             const P1 = thisPoint.attribute.neighbor.attribute.P ;       //the neighbor point positioon
             const P2 = thisPoint.attribute.P ;                          //this point position
@@ -152,9 +151,13 @@ function nursery(pos,force) {
 
 function offspring(xp) {
     myPointcloud.behavior.physics.obj = xp ;
+    const N = createVector(
+        xp.attribute.v.y*-1,
+        xp.attribute.v.x
+    );
     //collide the particles along the velocity axis
     //uses Phxyz.collision() because it handles velocity and force automatically
-    myPointcloud.behavior.physics.collision(xp.attribute.v.normalize().mult(-1)) ;
+    myPointcloud.behavior.physics.collision(N.normalize()) ;
     //change the color of the collided points
     xp.attribute.Cd = color(255,random(0,64),random(0,64)) ;
 
@@ -167,6 +170,7 @@ function offspring(xp) {
         x : xp.attribute.F.y,
         y : xp.attribute.F.x * -1
     } ;
+
     //create child point
     const newPoint = nursery(pos, force) ;
 
