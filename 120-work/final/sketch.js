@@ -115,6 +115,7 @@ function draw() {
             //draw the trailing line
             line(a.x,a.y,b.x,b.y);
             //apply stroke thickness (placed here to avoids blobs on first frame)
+            //sigmoid(speed)
             strokeWeight((1/(1+pow(2,(-5*(thisPoint.attribute.v.mag()-1))))) * strokeScale + strokeOffset) ;
 
         //kill stuck and distant points
