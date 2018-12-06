@@ -140,11 +140,7 @@ function nursery(pos,force) {
         newPoint.attribute['avoid'] = random(bias, avoidance);                                  //avoidance probability
         newPoint.attribute['attract'] = random(bias, attraction);                               //attraction probability
         newPoint.attribute['active'] = true ;
-        //add physics
-        //newPoint.behavior['physics'] = new Phxyz(newPoint);
-        //flag physics behavior to "true"
-        //newPoint.behavior.physics.active = true;
-        //return the new xPoint object for easy access
+    //return the new xPoint object for easy access
     return newPoint
     }
     //console.log(newPoint) ;
