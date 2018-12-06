@@ -88,23 +88,23 @@ The main issue here was difficulty understanding how to import p5 as a module. I
 Eventually I did get it to work, but once I had it working in a single p5 instance, I introduced reuse issues that defeated the purpose. I ended up just returning to the scheme I've been using and forgetting about E6 modules entirely.
 
 #### Behavior Scopes
-Behaviors can be applied to either individual particles, or the entire pointcloud, so when I started deciding how to approach how to manipulate attributes via behaviors the obvious solution was to simply have each point object inheret physics functionality from Phxyz.js.
+Behaviors can be applied to either individual particles, or the entire pointcloud. When I started deciding how to approach manipulating point attributes via behaviors the obvious solution was to simply have each point object inheret physics functionality from Phxyz.js.
 
-Bt because I wanted all of this to be modular and independent, with each module useable without requiring any other component, this didn't work well. So instead I simply added a physics behavior to every single particle, using itself as the target object.
+But because I wanted all of this to be modular and independent, with each module usable without requiring any other component, this didn't work well. So instead I simply added a physics behavior to every single particle, using itself as the target object.
 
 While writing this I realized that it would make more sense to place the physics behavior in the pointcloud behavior{} object, simply changing the Phxyz.obj property to the targeted point. This avoids ended up with hundreds of instances of the entire Phxyz class.
 
-While I do not know if there is any performance advantage here (id imagine there would be), the scheme is more in line conceptually with how I see this system working.
+While I do not know if there is any performance advantage here (i'd imagine there would be), the scheme is in line conceptually with how I see this system working, with pointclouds acting like a domain where multiple behaviors can be applied to a collection of points.
 
-#### Point Structure
+#### Recursive Point Structure Issue
 I was not immediately sure how I wanted to structure the points within a pointcloud. I knew I wanted some way to reference the pointcloud a point belonged to, but had a difficult time understanding how I wanted this reference to work.
 
-I tried assigning the point cloud to a point attribute, and as expected I had this recursive loop where the point referenced the pointcloud and the pointcloud in turn referenced the point. In the console I could endlessly expose the pointcloud, and from the pointcloud the point, and then the pointcloud again.
+I tried assigning the point cloud object itself to a point attribute, and as expected this resulted in a recursive loop where the point referenced the pointcloud and the pointcloud in turn referenced the point. In the console I could endlessly expose the pointcloud from any point, and from the pointcloud the back to the point, and then the pointcloud again.
 
-It didn't seem to affect performance, but it kind of freaked me out and stuck with arbitrary IDs instead.
+It didn't seem to affect performance, but it kind of freaked me out. Instead I stuck with arbitrary IDs instead.
 
 #### Zero Distance Bug
-One issue that I had some trouble understanding was that I initially placed the child particles directly at the same position as the parent, which caused an infinite loop scenario. To resolve this I instead had child points spawn at a random point near the parent. It is theoretically plausible that a subsequent child could be born here (and it does happen), but it will no longer result in a loop condition.
+One issue that I had some trouble understanding was that I initially placed the child particles directly at the same position as the parent, which caused an infinite loop scenario that rapidly added new points. To resolve this I instead had child points spawn at a random point near the parent. It is theoretically plausible that a subsequent child could be born within this radius (and it does happen), but it will no longer result in a loop condition.
 
 #### Distant Parent Bug
 When I envisioned the algorithm in the proposal, I imagined two child particles being spawned upon collision, one for the each point. However, what I found was that once the neighbor is evaluated, it is no longer close enough to spawn a child.
