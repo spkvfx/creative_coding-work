@@ -119,7 +119,7 @@ I initially prototyped this within the nursery() function, but eventually moved 
 #### Line Width
 I knew pretty early on I wanted the speed of points to influence the stroke width, with faster moving points having a smaller stroke. I tried a few methods using map(), but ultimately used an approximate sigmoid function of speed with scale and offset.
 
-#### Conclusion
+### Conclusion
 Overall this project was deceptively difficult. I knew that I had a lot of work to get everything up and running, but I definitely under-estimated the logistics involved with getting all of my classes to talk to one another without breaking them or making them intrinsically tied to one another. Overall I probably did spend about three times as much effort on this project that I did on the typical weekly assignment. However, most of this was involved with goals that are not neccesarily visible in this example.
 
 Nonetheless, I am happy with the project and the product, and I feel my overall understanding of topics such as code reuse and modularity have improved.
