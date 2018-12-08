@@ -1,3 +1,9 @@
+// Declare an array
+var sentence = ["nice!", "good one!", "not too shabby", "really?", "come on", "get it!"];
+
+// Start at first index
+var indices = 0;
+
 //define spheres array
 let spheres = [];
 
@@ -6,7 +12,7 @@ let spheres = [];
 
 
 //define number of spheres to be generated
-const numOfSpheres2 = 10;
+const numOfSpheres = 10;
 
 function setup() {
 
@@ -14,10 +20,15 @@ function setup() {
 
     //define original positions of spheres
     let start_x2 = 60;
-    let start_y2 = 60;
-    for (let e = 0; e < numOfSpheres2; e++) {
+    let start_y2 = 150;
+    for (let e = 0; e < numOfSpheres; e++) {
         spheres.push(new firstSphere(start_x2, start_y2));
+        spheres.push(new secondSphere(start_x2/2, start_y2/2))
+        spheres.push(new thirdSphere(start_x2/5, start_y2/5))
         //spheres2.push(new firstSphere(start_x2, start_y2));
+
+//for (let e = 0; e < numOfSpheres; e++) {
+        //spheres.push(new secondSphere(start_x2, start_y2))
 
         //make sure spheres don't overlap at the beginning
         start_x2 += 100;
@@ -56,6 +67,19 @@ function mousePressed() {
         let destroy = spheres[i].mouseCheck();
         if (destroy) {
             spheres.splice(i, 1);
+
+            indices += 1;
+
+            if (indices > sentence.length) {
+                indices = 0;
+            }
+
+            console.log(sentence[indices]);
+
+            fill('white');
+            textSize(70);
+            text(sentence[indices], 10, 250);
+
         }
     }
 }
@@ -66,7 +90,7 @@ function mousePressed() {
 class Sphere {
     constructor(x2, y2, rad, color) {
         this.color = color;
-        this.size = (15, 50);
+        this.size = (15, 20);
         this.rad = this.size / 2;
         this.posX = x2;
         this.posY = y2;
@@ -97,12 +121,12 @@ class Sphere {
 
         if (this.posX + this.rad >= width || this.posX - this.rad <= 0) {
             this.deltaX *= -1;
-            this.color = 'rgb(70, 250, 170)';
+            this.color = 'rgb(70, 100, 170)';
         }
 
         if (this.posY + this.rad >= height || this.posY - this.rad <= 0) {
             this.deltaY *= -1;
-            this.color = 'rgb(130, 240, 170)';
+            this.color = 'rgb(130, 70, 170)';
 
             if (this.posY + this.rad < height || this.posY - this.rad <= 0) {
                 this.deltaY *= 1;
@@ -162,5 +186,28 @@ class secondSphere extends Sphere {
     constructor(x2,y2,size2) {
         const rad2 = size2/2 ;
         super(x2,y2,rad2,"purple") ;
+        this.size = (15, 20);
+        this.posX = x2*4;
+        this.posY = y2*4;
+        this.deltaX = random(-3, 3);
+        this.deltaY = random(-3, 3);
     }
+}
+
+class thirdSphere extends Sphere {
+    constructor(x2,y2,size2) {
+        const rad2 = size2/2 ;
+        super(x2,y2,rad2,"yellow") ;
+        this.size = (7, 9);
+        this.posX = x2*6;
+        this.posY = y2*6;
+        this.deltaX = random(-4, 4);
+        this.deltaY = random(-4, 4);
+    }
+}
+
+
+function splice() {
+
+
 }

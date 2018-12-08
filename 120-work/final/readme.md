@@ -72,7 +72,7 @@ Once the particle's distance drops below a given value, several things happen:
 Because particles are moving very quickly as they approach one another, this has the effect of flinging children and parents away from the collision.
 
 #### Differences from the Proposal
-The proposal called for a few features that were not implemented. Mass modification was removed, just because it proved either inconsequential or completely unstable. I also thought I needed an average of all distances, but once I got a few particles moving up I did not think this was necessary.
+The proposal called for a few features that were not implemented. Mass modification was removed, just because it proved either inconsequential or completely unstable. I also thought I needed an average of all distances, but once I got a few particles moving up I did not think this was necessary. I also originally had velocity controlling birth, which was just kind of silly as distance would work the same as intended without risking unstable results.
 
 I also used Phxyz.collide() with the collision normal being a perpendicular of the velocity. Phxyz.collide() handles velocity and force updates automatically.
 
